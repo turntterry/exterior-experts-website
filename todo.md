@@ -114,3 +114,6 @@
 - [x] Add measurement disclaimer after service selection (prices may adjust after on-site measurement)
 - [x] Increase concrete/driveway slider max to 10,000 sq ft
 - [x] Rewrite Cookeville TN service area page with SEO-rich content, internal links to service pages, FAQ schema, and CTA
+- [x] Shorten Cookeville page title to under 60 characters
+- [x] Shorten Cookeville page meta description to under 160 characters
+- [x] Reduce keyword density on Cookeville page to 3-8 focused keywords

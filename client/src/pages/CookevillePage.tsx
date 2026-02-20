@@ -46,7 +46,7 @@ const SERVICE_SECTIONS = [
     icon: Droplets,
     href: "/pressure-washing-cookeville-tn",
     linkText: "Pressure Washing Cookeville",
-    intro: "Pressure washing is ideal for hard surfaces that collect heavy buildup. Many Cookeville homes have driveways, sidewalks, and patios that stain quickly from weather, traffic, and organic growth. Our pressure washing services help restore these surfaces to a clean, bright finish.",
+    intro: "Pressure washing is ideal for hard surfaces that collect heavy buildup. Many local homes have driveways, sidewalks, and patios that stain quickly from weather, traffic, and organic growth. Our services help restore these surfaces to a clean, bright finish.",
     items: [
       "Driveways and parking areas",
       "Sidewalks and walkways",
@@ -60,7 +60,7 @@ const SERVICE_SECTIONS = [
     icon: HomeIcon,
     href: "/house-washing-cookeville-tn",
     linkText: "House Washing Cookeville",
-    intro: "Many homes in Cookeville have vinyl siding, painted surfaces, brick exteriors, or trim that require a safe cleaning method. House washing is not \"blast it with pressure.\" We use a safer, professional approach to remove algae and grime without damaging your home.",
+    intro: "Many local homes have vinyl siding, painted surfaces, brick exteriors, or trim that require a safe cleaning method. House washing is not \"blast it with pressure.\" We use a safer, professional approach to remove algae and grime without damaging your home.",
     items: [
       "Vinyl siding and trim",
       "Painted surfaces",
@@ -73,7 +73,7 @@ const SERVICE_SECTIONS = [
     icon: SquareStack,
     href: "/window-cleaning-cookeville-tn",
     linkText: "Window Cleaning Cookeville",
-    intro: "Clean windows dramatically change how a home looks and feels. Cookeville's seasonal pollen and rain residue build up quickly on exterior glass. We provide professional window cleaning designed to leave glass clear and streak-free.",
+    intro: "Clean windows dramatically change how a home looks and feels. Seasonal pollen and rain residue build up quickly on exterior glass. We provide professional cleaning designed to leave glass clear and streak-free.",
     items: [
       "Exterior window cleaning",
       "Interior window cleaning (available on request)",
@@ -86,7 +86,7 @@ const SERVICE_SECTIONS = [
     icon: LayoutGrid,
     href: "/concrete-cleaning-cookeville-tn",
     linkText: "Concrete Cleaning Cookeville",
-    intro: "Concrete around Cookeville homes can stain from oil drips, algae growth, red clay residue, and seasonal debris. Concrete cleaning restores brightness and improves curb appeal — especially before listing a home, hosting guests, or completing exterior improvements.",
+    intro: "Concrete surfaces can stain from oil drips, algae growth, red clay residue, and seasonal debris. Professional cleaning restores brightness and improves curb appeal — especially before listing a home, hosting guests, or completing exterior improvements.",
     items: [
       "Driveways and sidewalks",
       "Patios and porches",
@@ -112,7 +112,7 @@ const SERVICE_SECTIONS = [
     icon: Triangle,
     href: "/roof-cleaning-cookeville-tn",
     linkText: "Roof Cleaning Cookeville",
-    intro: "Cookeville's humidity and shaded areas often lead to black streaks on shingles. Those streaks are typically algae and organic buildup. Roof cleaning helps restore your roof's appearance and can improve the overall look of your home.",
+    intro: "Humidity and shaded areas often lead to black streaks on shingles. Those streaks are typically algae and organic buildup. Roof cleaning helps restore your roof's appearance and can improve the overall look of your home.",
     items: [
       "Remove dark streaking and organic buildup",
       "Improve curb appeal",
@@ -163,10 +163,10 @@ export default function CookevillePage() {
   const location = LOCATIONS.find((l) => l.id === "cookeville")!;
 
   useEffect(() => {
-    document.title = "Exterior Cleaning Services in Cookeville, TN | Exterior Experts";
+    document.title = "Exterior Cleaning in Cookeville, TN | Exterior Experts";
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
-      metaDesc.setAttribute("content", "Professional pressure washing, house washing, window cleaning, gutter cleaning, roof cleaning & deck cleaning in Cookeville, TN. Licensed, insured & satisfaction guaranteed. Get a free quote.");
+      metaDesc.setAttribute("content", "Professional pressure washing & exterior cleaning in Cookeville, TN. Licensed, insured, satisfaction guaranteed. Free quotes available.");
     }
   }, []);
 
@@ -188,13 +188,13 @@ export default function CookevillePage() {
               Exterior Cleaning Services in Cookeville, TN
             </h1>
             <p className="text-lg text-white/80 mb-4 leading-relaxed">
-              Cookeville homeowners take pride in keeping their properties clean, safe, and well-maintained — but Tennessee weather makes exterior buildup inevitable. Between humidity, seasonal pollen, shaded areas, and frequent rain, it's common to see algae growth on siding, dark roof streaks, stained concrete, and debris buildup in gutters.
+              Homeowners in Cookeville take pride in keeping their properties clean and well-maintained — but Tennessee weather makes exterior buildup inevitable. Between humidity, seasonal pollen, and frequent rain, it's common to see algae on siding, dark roof streaks, stained concrete, and clogged gutters.
             </p>
             <p className="text-lg text-white/80 mb-4 leading-relaxed">
-              Exterior Experts Power Washing & Window Cleaning provides professional exterior cleaning services in Cookeville, TN and across the Upper Cumberland region. From restoring stained driveways to cleaning windows and brightening home exteriors, our goal is simple: deliver premium results, protect your property, and make your home look its best.
+              Exterior Experts provides professional exterior cleaning across Cookeville and the Upper Cumberland region. From restoring stained driveways to brightening home exteriors, our goal is simple: deliver premium results, protect your property, and make your home look its best.
             </p>
             <p className="text-base text-white/70 mb-8 leading-relaxed">
-              We proudly serve Cookeville and surrounding communities including Algood, Baxter, Sparta, and Livingston — and we're known for meticulous work, reliable scheduling, and a detail-first approach designed for higher-end homeowners.
+              We also serve Algood, Baxter, Sparta, and Livingston — and we're known for meticulous work, reliable scheduling, and a detail-first approach.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link href="/instant-quote">
@@ -219,7 +219,7 @@ export default function CookevillePage() {
             Why Cookeville Homes Need Regular Exterior Cleaning
           </h2>
           <p className="text-muted-foreground leading-relaxed mb-6">
-            Cookeville sits in a climate where exterior surfaces collect grime faster than most homeowners expect. If your home is near trees, shaded areas, or high-traffic roads, buildup happens even faster. Here are the most common issues we see across Cookeville and the Upper Cumberland:
+            The Upper Cumberland climate causes exterior surfaces to collect grime faster than most homeowners expect. If your home is near trees, shaded areas, or high-traffic roads, buildup happens even faster. Here are the most common issues we see:
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
             {[
@@ -249,7 +249,7 @@ export default function CookevillePage() {
             What We Do for Cookeville Homeowners
           </h2>
           <p className="text-muted-foreground leading-relaxed mb-10">
-            Exterior Experts offers a full range of exterior cleaning services in Cookeville. Below is a breakdown of our most common services and how they help local homeowners.
+            We offer a full range of services designed for local homeowners. Below is a breakdown of what we do and how each service helps.
           </p>
 
           <div className="space-y-8">
@@ -295,7 +295,7 @@ export default function CookevillePage() {
             Why Local Matters in Cookeville & Upper Cumberland
           </h2>
           <p className="text-muted-foreground leading-relaxed mb-6">
-            Choosing a local exterior cleaning company isn't just about convenience — it affects the quality of service you get. Exterior Experts is based near Cookeville, which means:
+            Choosing a local company isn't just about convenience — it affects the quality of service you get. We're based right here in the Upper Cumberland, which means:
           </p>
           <div className="space-y-3 mb-6">
             {[
@@ -323,7 +323,7 @@ export default function CookevillePage() {
             Areas We Serve Near Cookeville
           </h2>
           <p className="text-muted-foreground leading-relaxed mb-6">
-            We provide exterior cleaning services across Cookeville and surrounding Upper Cumberland communities, including:
+            We provide services across the Upper Cumberland, including:
           </p>
           <div className="flex flex-wrap gap-3 mb-6">
             {LOCATIONS.map((loc) => (
@@ -375,7 +375,7 @@ export default function CookevillePage() {
             Get a Free Quote in Cookeville, TN
           </h2>
           <p className="text-white/80 mb-4 max-w-2xl mx-auto">
-            If you're looking for premium exterior cleaning in Cookeville, Exterior Experts is ready to help. Whether you need pressure washing, house washing, windows, gutters, concrete, roof cleaning, or deck cleaning, we'll provide a clear quote and professional service from start to finish.
+            Whether you need your home washed, driveway restored, windows cleaned, or gutters cleared, we'll provide a clear quote and professional service from start to finish.
           </p>
           <p className="text-white/70 mb-8">Call now or request your free estimate online.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
