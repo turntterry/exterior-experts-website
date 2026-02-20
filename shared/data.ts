@@ -134,10 +134,36 @@ export const BUSINESS = {
 
 // ─── Gallery seed data ───────────────────────────────────────────────
 export const SEED_GALLERY = [
-  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/MgPWxoSgHBtimBCC.jpg", title: "House Washing Before & After", service: "house_washing" },
-  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/xgcRDijrPtTNuKYO.jpg", title: "Driveway Cleaning Before & After", service: "driveway_cleaning" },
-  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/fjcZziANygWyaFEJ.jpg", title: "Exterior Soft Wash Results", service: "house_washing" },
-  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/TjuUNdzYSzlURMPI.jpg", title: "Concrete Pressure Washing", service: "driveway_cleaning" },
-  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/GwsRtgtxMEKCAXfL.jpg", title: "Driveway Restoration", service: "driveway_cleaning" },
-  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/iZYVXqKJTBfKwbyy.webp", title: "Window Cleaning Service", service: "window_cleaning" },
+  // House Washing
+  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/KNbVbHKyQTjzkwVW.jpg", title: "Brick Wall Moss Removal", service: "house_washing" },
+  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/ttyMIsnAebkwcjQE.jpg", title: "Modern Home Exterior Wash", service: "house_washing" },
+  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/TYnVCzAVyeJAzDmw.jpg", title: "Vinyl Siding House Wash", service: "house_washing" },
+  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/shpwawcMzesvgnEI.jpg", title: "Full House Exterior Cleaning", service: "house_washing" },
+  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/HMDWRvSiHIyKTghE.jpg", title: "House Siding Restoration", service: "house_washing" },
+  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/ljdzHCHpLRBSUREj.jpg", title: "Exterior Home Cleaning", service: "house_washing" },
+  // Concrete / Driveway / Walkway
+  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/sGcPQdQIXNYcMhZO.jpg", title: "Patio Concrete Cleaning", service: "driveway_cleaning" },
+  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/JZsxiwXiIIWIZOfA.jpg", title: "Driveway & Walkway Restoration", service: "driveway_cleaning" },
+  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/gTvImMCKZsyVxLCo.jpg", title: "Walkway Moss Removal", service: "driveway_cleaning" },
+  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/GqmnRXOVjONHWbNX.jpg", title: "Brick Steps Deep Clean", service: "driveway_cleaning" },
+  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/iCDwumDEubtifHsh.jpg", title: "Concrete Walkway Restoration", service: "driveway_cleaning" },
+  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/vwRzOqQjtQFdxEnG.jpg", title: "Patio Area Pressure Wash", service: "driveway_cleaning" },
+  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/RnhCCFHMxRgBSUTP.jpg", title: "Brick Entryway Cleaning", service: "driveway_cleaning" },
+  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/XVXTDUyUkoyEUEtr.jpg", title: "Walkway & Patio Restoration", service: "driveway_cleaning" },
+  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/MpTtrmICmIlTqDMH.jpg", title: "Driveway & Garage Cleaning", service: "driveway_cleaning" },
+  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/XmBhgXyrQzeOHhoz.jpg", title: "Concrete Surface Cleaning", service: "driveway_cleaning" },
+  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/rMAlqEDPmVTBAxDU.jpg", title: "Driveway Pressure Washing", service: "driveway_cleaning" },
+  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/xxCCGPtrcnriOrbE.jpg", title: "Concrete Patio Cleaning", service: "driveway_cleaning" },
+  // Gutter Cleaning
+  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/PGsMAfBvnjUlyHwf.jpg", title: "Gutter Cleanout Before & After", service: "gutter_cleaning" },
+  // Deck Cleaning
+  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/qUeHkMXJfYavUqOr.jpg", title: "Deck Cleaning & Staining", service: "deck_cleaning" },
+  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/gmTYDtIFrQPankQT.jpg", title: "Deck Restoration", service: "deck_cleaning" },
+  // Roof Cleaning
+  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/TNrOMBVJkbjrHFZf.jpg", title: "Metal Roof Cleaning", service: "roof_cleaning" },
+  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/eYjDvpyONEXXdvJP.jpg", title: "Roof Wash & Restoration", service: "roof_cleaning" },
+  // Additional work photos
+  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/cJvQzOpxuGPChxir.jpg", title: "Exterior Cleaning Results", service: "pressure_washing" },
+  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/yGPawfYlHDpKqjaT.jpg", title: "Professional Cleaning Results", service: "pressure_washing" },
+  { url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/KhhVzDXUggENKlHL.jpg", title: "Before & After Transformation", service: "pressure_washing" },
 ];

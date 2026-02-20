@@ -57,3 +57,6 @@
 - [x] Responsive design: mobile-first approach
 - [x] Write vitest tests for pricing engine
 - [x] Write vitest tests for quote submission flow
+- [x] Replace stock gallery photos with real before/after work photos
+- [x] Update Google reviews section with actual customer reviews from screenshots
+- [x] Upload all real photos to S3

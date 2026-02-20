@@ -135,7 +135,16 @@ function ServicesSection() {
 }
 
 function GalleryPreview() {
-  const images = SEED_GALLERY.slice(0, 6);
+  // Show a diverse mix of services in the homepage preview
+  const featured = [
+    SEED_GALLERY[0],  // House washing - brick
+    SEED_GALLERY[6],  // Concrete - patio
+    SEED_GALLERY[19], // Deck cleaning
+    SEED_GALLERY[1],  // House washing - modern
+    SEED_GALLERY[21], // Roof cleaning
+    SEED_GALLERY[18], // Gutter cleaning
+  ];
+  const images = featured;
   return (
     <section className="py-16 md:py-24 bg-secondary">
       <div className="container">
@@ -214,10 +223,11 @@ function WhyChooseUs() {
 
 function ReviewsSection() {
   const reviews = [
-    { name: "Sarah M.", text: "Exterior Experts did an amazing job on our house wash. The siding looks brand new! Randall was professional and thorough.", rating: 5 },
-    { name: "James T.", text: "Best window cleaning service in Cookeville. They were on time, efficient, and the windows are spotless. Highly recommend!", rating: 5 },
-    { name: "Lisa K.", text: "Our driveway hadn't been cleaned in years. The difference is incredible! Fair pricing and great communication throughout.", rating: 5 },
-    { name: "Mike R.", text: "Used Exterior Experts for a full house wash and gutter cleaning. Excellent work and very reasonable prices. Will definitely use again!", rating: 5 },
+    { name: "David Weatherly", text: "Answered phone when I called, good communication via text, showed up on time and did a good job. Personable and reasonably priced. Will use again.", rating: 5 },
+    { name: "Ken Novander", text: "Exterior Experts did a fantastic job! I used Exterior Experts to install Christmas lights on my home, and I couldn't be happier with the results. They outlined all the roof lines beautifully, and the pricing felt very competitive. Randell was great to work with\u2014he walked me through several design options. Installation was quick, professional, and done right the first time. Highly recommend!", rating: 5 },
+    { name: "Ann-Marie Elkins", text: "Veni. Vidi. Vici. He came. He saw. He conquered.", rating: 5 },
+    { name: "Jimmy Dickinson", text: "Randy did a great job, he arrived when he said he would and performed the job as quoted. You will not be disappointed.", rating: 5 },
+    { name: "Doug Roe", text: "What an overwhelming great experience. Thank you for a job well done!", rating: 5 },
   ];
   return (
     <section className="py-16 md:py-24 bg-secondary">
@@ -231,14 +241,17 @@ function ReviewsSection() {
           </div>
           <p className="text-muted-foreground">5-Star Rated on Google</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {reviews.map((review, i) => (
             <Card key={i} className="bg-white">
               <CardContent className="p-6">
-                <div className="flex gap-1 mb-3">
-                  {[1,2,3,4,5].map(s => (
-                    <Star key={s} className={`w-4 h-4 ${s <= review.rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`} />
-                  ))}
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex gap-1">
+                    {[1,2,3,4,5].map(s => (
+                      <Star key={s} className={`w-4 h-4 ${s <= review.rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`} />
+                    ))}
+                  </div>
+                  <svg className="w-5 h-5" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
                 </div>
                 <p className="text-sm text-foreground leading-relaxed mb-4">"{review.text}"</p>
                 <p className="text-sm font-semibold text-primary">{review.name}</p>
