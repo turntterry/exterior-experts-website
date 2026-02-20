@@ -119,3 +119,6 @@
 - [x] Reduce keyword density on Cookeville page to 3-8 focused keywords
 - [x] Shorten House Washing Cookeville page meta description to under 160 characters
 - [x] Reduce keyword density on House Washing Cookeville page to 3-8 focused keywords
+- [x] Trim homepage meta keywords in index.html to 5-6 focused terms
+- [x] Shorten homepage meta description in index.html to under 160 characters
+- [x] Add dynamic title/description/keywords to LocationPage for all city pages (Algood, Baxter, Sparta, Livingston)

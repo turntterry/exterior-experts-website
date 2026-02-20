@@ -5,6 +5,7 @@ import { Link } from "wouter";
 import { BUSINESS, SERVICES, LOCATIONS } from "@shared/data";
 import { LocationSchema } from "@/components/SchemaMarkup";
 import { Phone, ArrowRight, MapPin, CheckCircle } from "lucide-react";
+import { useEffect } from "react";
 
 interface LocationPageProps {
   locationId: string;
@@ -38,6 +39,18 @@ export default function LocationPage({ locationId }: LocationPageProps) {
   if (!location) return null;
 
   const locationName = `${location.name}, ${location.state}`;
+
+  useEffect(() => {
+    document.title = `Exterior Cleaning ${location.name}, TN | Exterior Experts`;
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute("content", `Professional pressure washing & exterior cleaning in ${locationName}. Licensed, insured, satisfaction guaranteed. Free quotes.`);
+    }
+    const metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (metaKeywords) {
+      metaKeywords.setAttribute("content", `pressure washing ${location.name} TN, exterior cleaning ${location.name}, house washing ${location.name} TN`);
+    }
+  }, [location]);
   const content = LOCATION_CONTENT[locationId] || {
     intro: `We proudly serve homeowners in ${location.name} and the surrounding area with professional exterior cleaning services.`,
     localNote: `${location.name} is within our service area. Use our instant quote tool to check pricing for your address.`,
