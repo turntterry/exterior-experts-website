@@ -110,7 +110,7 @@ export function LocalBusinessSchema() {
         },
       })),
     },
-    sameAs: [BUSINESS.googleMapsUrl],
+    sameAs: [BUSINESS.googleMapsUrl, BUSINESS.facebook, BUSINESS.instagram],
   };
 
   return <JsonLd data={schema} />;

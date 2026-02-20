@@ -60,13 +60,13 @@
 - [x] Replace stock gallery photos with real before/after work photos
 - [x] Update Google reviews section with actual customer reviews from screenshots
 - [x] Upload all real photos to S3
-- [ ] Add LocalBusiness JSON-LD schema to homepage
-- [ ] Add Service schema for each service page
-- [ ] Add BreadcrumbList schema for navigation
-- [ ] Add AggregateRating schema with Google reviews data
-- [ ] Add AreaServed schema for location pages
-- [ ] Add FAQPage schema where applicable
-- [ ] Create reusable SchemaMarkup component
+- [x] Add LocalBusiness JSON-LD schema to homepage
+- [x] Add Service schema for each service page
+- [x] Add BreadcrumbList schema for navigation
+- [x] Add AggregateRating schema with Google reviews data
+- [x] Add AreaServed schema for location pages
+- [x] Add FAQPage schema where applicable
+- [x] Create reusable SchemaMarkup component
 - [x] Add LocalBusiness JSON-LD schema to homepage
 - [x] Add Service schema for each service page
 - [x] Add BreadcrumbList schema for all pages
@@ -75,3 +75,15 @@
 - [x] Add FAQPage schema on service pages
 - [x] Create reusable SchemaMarkup component
 - [x] Add high-impact hero background image to homepage
+- [x] Replace hero image with premium house photo (not stock-looking)
+- [x] Rewrite all website copy to sound natural, not AI-generated
+- [x] Homepage: expand to 1000-1500 words with meaningful content sections
+- [x] Service pages: expand to 900-1300 words each with What's Included, Pricing Factors, Our Process, FAQ
+- [x] Add Related Services internal linking block on every service page
+- [x] Add Service Areas mini-section on service pages
+- [x] Add social profiles (Facebook, Instagram) to schema sameAs
+- [ ] Write unique meta titles (50-60 chars) and descriptions (140-160 chars) per page
+- [x] Validate all JSON-LD schema across site
+- [ ] Create blog foundation with category structure
+- [ ] Write 2 full starter blog posts (1200-1800 words each)
+- [ ] Final QA: no keyword stuffing, no fake claims, all pages have schema + meta + internal links

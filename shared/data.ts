@@ -130,6 +130,8 @@ export const BUSINESS = {
   logoLargeUrl: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/RQDxVrUmljsTHUtc.png",
   baseLat: 36.1628,
   baseLng: -85.5016,
+  facebook: "https://www.facebook.com/exteriorexpertspw",
+  instagram: "https://www.instagram.com/exteriorexpertspw",
 };
 
 // ─── Gallery seed data ───────────────────────────────────────────────

@@ -7,6 +7,7 @@ import { LocalBusinessSchema, WebSiteSchema } from "@/components/SchemaMarkup";
 import {
   Phone, Star, Shield, Award, Clock, CheckCircle, ArrowRight,
   Home as HomeIcon, Droplets, SquareStack, Filter, LayoutGrid, Triangle, Fence, MapPin,
+  Users, ThumbsUp, Sparkles,
 } from "lucide-react";
 
 const ICON_MAP: Record<string, React.ElementType> = {
@@ -20,9 +21,11 @@ export default function Home() {
       <WebSiteSchema />
       <HeroSection />
       <TrustBar />
+      <IntroSection />
       <ServicesSection />
       <GalleryPreview />
       <WhyChooseUs />
+      <ProcessOverview />
       <ReviewsSection />
       <ServiceAreasSection />
       <CTASection />
@@ -30,50 +33,43 @@ export default function Home() {
   );
 }
 
-const HERO_BG = "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/zIjrarHTBoYrDxGO.jpg";
+const HERO_BG = "https://files.manuscdn.com/user_upload_by_module/session_file/310519663366996886/QPbkPWKJvkoDTGcA.jpg";
 
 function HeroSection() {
   return (
     <section className="relative bg-navy overflow-hidden min-h-[600px] md:min-h-[700px] flex items-center">
-      {/* Background image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url("${HERO_BG}")` }}
       />
-      {/* Dark overlay gradient for text readability */}
-      <div className="absolute inset-0 bg-gradient-to-r from-navy-dark/95 via-navy/85 to-navy/60" />
-      {/* Subtle bottom vignette */}
-      <div className="absolute inset-0 bg-gradient-to-t from-navy-dark/50 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-navy-dark/90 via-navy/75 to-navy/40" />
+      <div className="absolute inset-0 bg-gradient-to-t from-navy-dark/40 via-transparent to-transparent" />
       <div className="container relative py-20 md:py-28 lg:py-36">
         <div className="max-w-3xl">
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-1.5 mb-6">
-            <Shield className="w-4 h-4 text-sky" />
-            <span className="text-sm text-white/90 font-medium">Licensed & Insured</span>
-          </div>
           <h1 className="font-heading font-black text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-6">
-            Professional Power Washing & Window Cleaning in{" "}
-            <span className="text-sky">Cookeville, TN</span>
+            Premium Pressure Washing & Exterior Cleaning in{" "}
+            <span className="text-sky">Cookeville & Upper Cumberland</span>
           </h1>
-          <p className="text-lg md:text-xl text-white/80 mb-8 max-w-2xl leading-relaxed">
-            Transform your home's exterior with our expert pressure washing, soft washing, and window cleaning services. Serving the Upper Cumberland region with satisfaction guaranteed.
+          <p className="text-lg md:text-xl text-white/90 mb-4 max-w-2xl leading-relaxed">
+            Serving Cookeville, Baxter, Algood & Upper Cumberland
           </p>
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col sm:flex-row gap-4 mb-6">
             <Link href="/instant-quote">
               <Button size="lg" className="bg-sky hover:bg-sky-light text-white font-bold text-lg px-8 py-6 shadow-lg">
-                Get Your Instant Quote
+                Get My Free Quote
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </Link>
             <a href={`tel:${BUSINESS.phoneRaw}`}>
               <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 font-bold text-lg px-8 py-6">
                 <Phone className="w-5 h-5 mr-2" />
-                {BUSINESS.phone}
+                Call Now
               </Button>
             </a>
           </div>
+          <p className="text-sm text-white/70">Fully Insured &bull; Local & Professional &bull; Satisfaction Guaranteed</p>
         </div>
       </div>
-      {/* Angled bottom edge */}
       <div className="absolute bottom-0 left-0 right-0">
         <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
           <path d="M0 80L1440 80L1440 30L0 80Z" fill="white" />
@@ -86,7 +82,7 @@ function HeroSection() {
 function TrustBar() {
   const badges = [
     { icon: Shield, label: "Fully Insured" },
-    { icon: Award, label: "5-Star Rated" },
+    { icon: Star, label: "5-Star Google Reviews" },
     { icon: Clock, label: "Same-Day Quotes" },
     { icon: CheckCircle, label: "Satisfaction Guaranteed" },
   ];
@@ -106,16 +102,41 @@ function TrustBar() {
   );
 }
 
+function IntroSection() {
+  return (
+    <section className="py-16 md:py-20 bg-white">
+      <div className="container">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-6 text-center">
+            Professional Exterior Cleaning Services in Cookeville & Upper Cumberland
+          </h2>
+          <div className="prose prose-lg max-w-none text-muted-foreground leading-relaxed space-y-4">
+            <p>
+              Your home is one of the biggest investments you'll ever make. Over time, Tennessee's humidity, rain, and shade create the perfect conditions for mold, mildew, algae, and dirt to build up on your siding, roof, driveway, and gutters. That buildup doesn't just look bad — it can cause real damage if it's left alone.
+            </p>
+            <p>
+              Exterior Experts is a locally owned and operated exterior cleaning company based right here in Cookeville. We specialize in house washing, pressure washing, window cleaning, gutter cleaning, roof cleaning, and deck restoration for homeowners across the Upper Cumberland region. Every job is handled by our trained crew using professional-grade equipment and cleaning solutions that are tough on grime but safe for your property, your landscaping, and your family.
+            </p>
+            <p>
+              We built our business on doing honest work at fair prices. That means showing up when we say we will, doing the job right the first time, and standing behind our work with a satisfaction guarantee. No pressure, no upselling — just clean results you can see from the street.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ServicesSection() {
   return (
-    <section className="py-16 md:py-24 bg-white">
+    <section className="py-16 md:py-24 bg-secondary">
       <div className="container">
         <div className="text-center mb-12">
           <h2 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-4">
-            Our Exterior Cleaning Services
+            What We Do
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            From house washing to window cleaning, we offer comprehensive exterior cleaning solutions for your home.
+            From soft washing your siding to scrubbing your driveway, we handle every exterior surface on your property.
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -145,29 +166,27 @@ function ServicesSection() {
 }
 
 function GalleryPreview() {
-  // Show a diverse mix of services in the homepage preview
   const featured = [
-    SEED_GALLERY[0],  // House washing - brick
-    SEED_GALLERY[6],  // Concrete - patio
-    SEED_GALLERY[19], // Deck cleaning
-    SEED_GALLERY[1],  // House washing - modern
-    SEED_GALLERY[21], // Roof cleaning
-    SEED_GALLERY[18], // Gutter cleaning
+    SEED_GALLERY[0],
+    SEED_GALLERY[6],
+    SEED_GALLERY[19],
+    SEED_GALLERY[1],
+    SEED_GALLERY[21],
+    SEED_GALLERY[18],
   ];
-  const images = featured;
   return (
-    <section className="py-16 md:py-24 bg-secondary">
+    <section className="py-16 md:py-24 bg-white">
       <div className="container">
         <div className="text-center mb-12">
           <h2 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-4">
-            See Our Work
+            Recent Work in the Upper Cumberland
           </h2>
           <p className="text-muted-foreground text-lg">
-            Real results from real customers in the Upper Cumberland area.
+            These are real results from real jobs — not stock photos.
           </p>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {images.map((img, i) => (
+          {featured.map((img, i) => (
             <div key={i} className="relative group overflow-hidden rounded-xl aspect-[4/3]">
               <img
                 src={img.url}
@@ -198,31 +217,63 @@ function GalleryPreview() {
 
 function WhyChooseUs() {
   const reasons = [
-    { title: "Licensed & Insured", desc: "Full liability coverage for your peace of mind. We protect your property like it's our own." },
-    { title: "Satisfaction Guaranteed", desc: "If you're not 100% satisfied, we'll come back and make it right at no extra charge." },
-    { title: "Transparent Pricing", desc: "Get an instant quote online with no hidden fees. Know exactly what you'll pay before we arrive." },
-    { title: "Experienced Team", desc: "Our trained technicians use professional-grade equipment and eco-friendly cleaning solutions." },
-    { title: "Local & Trusted", desc: "Proudly serving the Upper Cumberland region. We're your neighbors and we care about our community." },
-    { title: "Flexible Scheduling", desc: "Book online at your convenience. We work around your schedule to minimize disruption." },
+    { icon: Shield, title: "Licensed & Fully Insured", desc: "We carry full liability insurance on every job. If something goes wrong, you're covered — but in thousands of cleanings, it hasn't." },
+    { icon: ThumbsUp, title: "Satisfaction Guaranteed", desc: "If you're not happy with the results, call us. We'll come back and make it right at no extra cost. That's a promise, not a marketing line." },
+    { icon: Sparkles, title: "Honest, Upfront Pricing", desc: "Use our instant quote tool to see exactly what you'll pay before we show up. No bait-and-switch, no surprise fees on the invoice." },
+    { icon: Users, title: "Local Crew, Not a Franchise", desc: "We live and work in the Upper Cumberland. When you call, you're talking to the people who actually do the work — not a call center." },
+    { icon: Award, title: "5-Star Reputation", desc: "Our Google reviews speak for themselves. We've earned every one of them by showing up on time, doing quality work, and treating people right." },
+    { icon: Clock, title: "Flexible Scheduling", desc: "Book online whenever it's convenient for you. We work around your schedule, not the other way around." },
   ];
   return (
-    <section className="py-16 md:py-24 bg-white">
+    <section className="py-16 md:py-24 bg-secondary">
       <div className="container">
         <div className="text-center mb-12">
           <h2 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-4">
-            Why Choose Exterior Experts?
+            Why Upper Cumberland Homeowners Trust Exterior Experts
           </h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {reasons.map(r => (
             <div key={r.title} className="flex gap-4">
               <div className="shrink-0">
-                <CheckCircle className="w-6 h-6 text-primary mt-1" />
+                <r.icon className="w-6 h-6 text-primary mt-1" />
               </div>
               <div>
                 <h3 className="font-heading font-bold text-lg mb-1">{r.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{r.desc}</p>
               </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ProcessOverview() {
+  const steps = [
+    { num: "1", title: "Get Your Quote", desc: "Use our instant quote tool or give us a call. Tell us what you need cleaned, and we'll give you a price on the spot." },
+    { num: "2", title: "Pick Your Date", desc: "Choose a day and time that works for your schedule. We'll confirm your appointment and send a reminder before we arrive." },
+    { num: "3", title: "We Do the Work", desc: "Our crew shows up on time with everything we need. We clean your property, do a walkthrough with you, and make sure you're satisfied." },
+    { num: "4", title: "Enjoy the Results", desc: "That's it. Your home looks great, your curb appeal is back, and you didn't have to lift a finger." },
+  ];
+  return (
+    <section className="py-16 md:py-24 bg-white">
+      <div className="container">
+        <div className="text-center mb-12">
+          <h2 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-4">
+            How It Works
+          </h2>
+          <p className="text-muted-foreground text-lg">Getting your home cleaned shouldn't be complicated.</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-5xl mx-auto">
+          {steps.map(s => (
+            <div key={s.num} className="text-center">
+              <div className="w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xl mx-auto mb-4">
+                {s.num}
+              </div>
+              <h3 className="font-heading font-bold text-lg mb-2">{s.title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
             </div>
           ))}
         </div>
@@ -247,7 +298,9 @@ function ReviewsSection() {
             What Our Customers Say
           </h2>
           <div className="flex items-center justify-center gap-1 mb-2">
-            {[1,2,3,4,5].map(i => <Star key={i} className="w-6 h-6 fill-yellow-400 text-yellow-400" />)}
+            {[1,2,3,4,5].map(i => (
+              <Star key={i} className="w-6 h-6 fill-yellow-400 text-yellow-400" />
+            ))}
           </div>
           <p className="text-muted-foreground">5-Star Rated on Google</p>
         </div>
@@ -286,15 +339,15 @@ function ServiceAreasSection() {
   return (
     <section className="py-16 md:py-24 bg-white">
       <div className="container">
-        <div className="text-center mb-12">
+        <div className="text-center mb-6">
           <h2 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-4">
             Serving the Upper Cumberland Region
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            We proudly serve Cookeville and the surrounding communities within a 40-mile radius.
+            We're based in Cookeville and serve homeowners within a 40-mile radius. If you're in the Upper Cumberland, we can get to you.
           </p>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mb-8">
           {LOCATIONS.map(loc => (
             <Link key={loc.id} href={`/service-areas/${loc.slug}`}>
               <Card className="group hover:shadow-md transition-all cursor-pointer hover:border-primary/30">
@@ -306,6 +359,13 @@ function ServiceAreasSection() {
               </Card>
             </Link>
           ))}
+        </div>
+        <div className="max-w-3xl mx-auto text-center">
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            Don't see your town listed? We likely still serve your area. Give us a call at{" "}
+            <a href={`tel:${BUSINESS.phoneRaw}`} className="text-primary font-semibold hover:underline">{BUSINESS.phone}</a>{" "}
+            or use our instant quote tool — it will check your address automatically.
+          </p>
         </div>
       </div>
     </section>
@@ -320,15 +380,15 @@ function CTASection() {
       }} />
       <div className="container relative text-center">
         <h2 className="font-heading font-bold text-3xl md:text-4xl text-white mb-4">
-          Ready to Transform Your Home's Exterior?
+          Ready to See What Your Home Really Looks Like Under All That Grime?
         </h2>
         <p className="text-lg text-white/80 mb-8 max-w-2xl mx-auto">
-          Get an instant quote in under 2 minutes. No obligation, no hidden fees.
+          Get a price in under 2 minutes. No obligation, no sales pitch.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link href="/instant-quote">
             <Button size="lg" className="bg-sky hover:bg-sky-light text-white font-bold text-lg px-8 py-6">
-              Get Your Instant Quote
+              Get My Free Quote
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
           </Link>
