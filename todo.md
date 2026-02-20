@@ -74,3 +74,4 @@
 - [x] Add AreaServed schema for location pages
 - [x] Add FAQPage schema on service pages
 - [x] Create reusable SchemaMarkup component
+- [x] Add high-impact hero background image to homepage
