@@ -1,0 +1,59 @@
+# Project TODO
+
+- [x] Upload logo to S3 and set as app logo
+- [x] Set up navy blue color scheme and Google Fonts in index.css
+- [x] Database schema: quotes, quote_items, gallery_images, pricing_config, contact_submissions
+- [x] Homepage: hero section with CTA, services grid, before/after gallery, trust badges, reviews, service areas
+- [x] Navigation: sticky header with logo, phone number, nav links, mobile hamburger menu
+- [x] Footer: contact info, service areas, quick links, social media
+- [x] Service page: House Washing Cookeville
+- [x] Service page: Window Cleaning Cookeville
+- [x] Service page: Gutter Cleaning Cookeville
+- [x] Service page: Concrete Cleaning Cookeville
+- [x] Service page: Roof Cleaning Cookeville
+- [x] Service page: Deck Cleaning Cookeville
+- [x] Service page: Pressure Washing Cookeville
+- [x] Service page: Pressure Washing Sparta
+- [x] Service page: Window Cleaning Sparta
+- [x] Service page: House Washing Livingston
+- [x] Service Areas hub page
+- [x] City pages: Cookeville, Baxter, Algood, Sparta, Livingston
+- [ ] SEO: meta titles, descriptions, H1s, schema markup per skill spec
+- [ ] Internal linking per skill spec rules
+- [x] Instant Quote Tool: multi-step wizard UI
+- [x] Quote Step 1: Address input with Google Maps autocomplete
+- [x] Quote Step 2: Contact capture (name, phone, email)
+- [x] Quote Step 3: Visual service selection tiles
+- [x] Quote Step 4: Per-service configuration (sqft, windows, size tiers, stories, etc.)
+- [x] Quote Step 5: Live price breakdown with bundle discounts
+- [x] Quote Step 6: Package tiers (Good/Better/Best) for applicable services
+- [x] Quote Step 7: Photo upload capability
+- [x] Quote Step 8: Self-scheduling (preferred date/time)
+- [x] Quote Step 9: Submit and confirmation
+- [x] Pricing engine: House Washing ($0.14/sqft, story multipliers, $350 min)
+- [x] Pricing engine: Window Cleaning ($10-11/window, $250 min)
+- [x] Pricing engine: Driveway/Concrete ($0.20/sqft, size tiers)
+- [x] Pricing engine: Roof Cleaning ($0.30/sqft, pitch multipliers, $575 min)
+- [x] Pricing engine: Gutter Cleaning (size-based)
+- [x] Pricing engine: Patio ($0.55/sqft, size tiers)
+- [x] Pricing engine: Walkway ($0.55/sqft, size tiers)
+- [x] Pricing engine: Deck/Fence (reasonable defaults)
+- [x] Pricing engine: Bundle discounts for multiple services
+- [x] Pricing engine: Distance calculation from 177 Webb Ave (40-mile radius)
+- [x] Pricing engine: $225 job minimum enforcement
+- [x] Admin dashboard: sidebar layout with navigation
+- [x] Admin: View all quote submissions with filters and search
+- [x] Admin: Lead management (status tracking, notes)
+- [x] Admin: Pricing formula editor (adjust rates, minimums, multipliers)
+- [ ] Admin: Conversion rate tracking and analytics
+- [x] Admin: Before/after photo gallery management (upload/delete)
+- [x] Contact form with service selection and property details
+- [x] Before/after photo gallery page (public)
+- [x] Notification: Auto-notify owner on new quote submission
+- [ ] Google Maps: service area visualization on service areas page
+- [x] Google Maps: distance calculation in quote tool
+- [x] S3 storage: customer photo uploads during quote
+- [x] S3 storage: admin gallery photo uploads
+- [x] Responsive design: mobile-first approach
+- [x] Write vitest tests for pricing engine
+- [x] Write vitest tests for quote submission flow

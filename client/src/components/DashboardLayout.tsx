@@ -21,15 +21,18 @@ import {
 } from "@/components/ui/sidebar";
 import { getLoginUrl } from "@/const";
 import { useIsMobile } from "@/hooks/useMobile";
-import { LayoutDashboard, LogOut, PanelLeft, Users } from "lucide-react";
+import { LayoutDashboard, LogOut, PanelLeft, Users, DollarSign, Image, MessageSquare, BarChart3, ArrowLeft } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
 import { Button } from "./ui/button";
 
-const menuItems = [
-  { icon: LayoutDashboard, label: "Page 1", path: "/" },
-  { icon: Users, label: "Page 2", path: "/some-path" },
+const defaultMenuItems = [
+  { icon: LayoutDashboard, label: "Dashboard", path: "/admin" },
+  { icon: MessageSquare, label: "Quotes", path: "/admin/quotes" },
+  { icon: DollarSign, label: "Pricing", path: "/admin/pricing" },
+  { icon: Image, label: "Gallery", path: "/admin/gallery" },
+  { icon: Users, label: "Contacts", path: "/admin/contacts" },
 ];
 
 const SIDEBAR_WIDTH_KEY = "sidebar-width";
@@ -39,8 +42,12 @@ const MAX_WIDTH = 480;
 
 export default function DashboardLayout({
   children,
+  navItems,
+  title,
 }: {
   children: React.ReactNode;
+  navItems?: { label: string; href: string }[];
+  title?: string;
 }) {
   const [sidebarWidth, setSidebarWidth] = useState(() => {
     const saved = localStorage.getItem(SIDEBAR_WIDTH_KEY);
@@ -112,6 +119,7 @@ function DashboardLayoutContent({
   const isCollapsed = state === "collapsed";
   const [isResizing, setIsResizing] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
+  const menuItems = defaultMenuItems;
   const activeMenuItem = menuItems.find(item => item.path === location);
   const isMobile = useIsMobile();
 
