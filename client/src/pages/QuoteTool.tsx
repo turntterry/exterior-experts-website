@@ -4,11 +4,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
 import { BUSINESS, SERVICES } from "@shared/data";
 import { trpc } from "@/lib/trpc";
 import {
@@ -18,6 +19,7 @@ import {
 import {
   ArrowRight, ArrowLeft, CheckCircle, Phone, MapPin, Upload, Calendar, Clock,
   Home as HomeIcon, Droplets, SquareStack, Filter, LayoutGrid, Triangle, Fence, X, Loader2, Shield, Star,
+  Ruler, FlipHorizontal,
 } from "lucide-react";
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { toast } from "sonner";
@@ -33,13 +35,20 @@ const QUOTABLE_SERVICES = [
   { id: "gutter_cleaning", name: "Gutter Cleaning", icon: "Filter", desc: "Debris removal & flushing" },
   { id: "driveway_cleaning", name: "Driveway / Concrete", icon: "LayoutGrid", desc: "Driveways, sidewalks & patios" },
   { id: "roof_cleaning", name: "Roof Cleaning", icon: "Triangle", desc: "Soft wash roof treatment" },
-  { id: "deck_cleaning", name: "Deck / Fence", icon: "Fence", desc: "Decks, fences & patios" },
+  { id: "deck_cleaning", name: "Deck Cleaning", icon: "Fence", desc: "Deck surface cleaning" },
+  { id: "fence_cleaning", name: "Fence Cleaning", icon: "Fence", desc: "Fence washing & restoration" },
   { id: "patio_cleaning", name: "Patio Cleaning", icon: "LayoutGrid", desc: "Patio surface cleaning" },
   { id: "walkway_cleaning", name: "Walkway Cleaning", icon: "LayoutGrid", desc: "Walkway & path cleaning" },
 ];
 
-const SIZE_LABELS: Record<string, string> = {
-  S: "Small", M: "Medium", L: "Large", XL: "Extra Large", "2XL": "2X Large",
+// Slider configs per service (defaults, overridden by DB config)
+const SLIDER_DEFAULTS: Record<string, { min: number; max: number; step: number; default: number; unit: string }> = {
+  gutter_cleaning: { min: 50, max: 400, step: 10, default: 150, unit: "linear ft" },
+  fence_cleaning: { min: 20, max: 500, step: 10, default: 100, unit: "linear ft" },
+  deck_cleaning: { min: 50, max: 1200, step: 25, default: 300, unit: "sq ft" },
+  driveway_cleaning: { min: 100, max: 2000, step: 50, default: 500, unit: "sq ft" },
+  patio_cleaning: { min: 50, max: 1000, step: 25, default: 250, unit: "sq ft" },
+  walkway_cleaning: { min: 20, max: 500, step: 10, default: 100, unit: "sq ft" },
 };
 
 const STEPS = ["Address", "Contact", "Services", "Details", "Review", "Schedule", "Submit"];
@@ -249,28 +258,27 @@ export default function QuoteTool() {
           <h1 className="font-heading font-bold text-2xl md:text-3xl text-white mb-2">
             Get Your Instant Quote
           </h1>
-          <p className="text-white/70 text-sm">Transparent pricing in under 2 minutes</p>
+          <p className="text-white/70 text-sm md:text-base">
+            Accurate pricing in under 2 minutes. No obligation, no sales pitch.
+          </p>
         </div>
       </section>
 
-      <section className="py-8 md:py-12 bg-secondary min-h-[60vh]">
+      <section className="py-8 md:py-12 bg-secondary/30">
         <div className="container max-w-3xl">
-          {/* Progress */}
+          {/* Step indicators */}
           <div className="mb-8">
-            <div className="flex justify-between mb-2">
+            <div className="flex justify-between text-xs font-medium text-muted-foreground mb-2">
               {STEPS.map((s, i) => (
-                <span key={s} className={`text-xs font-medium hidden sm:block ${i <= step ? "text-primary" : "text-muted-foreground"}`}>
-                  {s}
-                </span>
+                <span key={s} className={i <= step ? "text-primary font-semibold" : ""}>{s}</span>
               ))}
-              <span className="sm:hidden text-sm font-medium text-primary">Step {step + 1} of {STEPS.length}: {STEPS[step]}</span>
             </div>
-            <Progress value={((step + 1) / STEPS.length) * 100} className="h-2" />
+            <Progress value={(step / (STEPS.length - 1)) * 100} className="h-2" />
           </div>
 
-          <Card className="shadow-lg">
+          <Card className="shadow-lg border-0">
             <CardContent className="p-6 md:p-8">
-              {step === 0 && <StepAddress address={address} setAddress={setAddress} city={city} setCity={setCity} stateVal={stateVal} setStateVal={setStateVal} zip={zip} setZip={setZip} setLat={setLat} setLng={setLng} distanceMiles={distanceMiles} setDistanceMiles={setDistanceMiles} outOfRange={outOfRange} setOutOfRange={setOutOfRange} globalConfig={globalConfig} />}
+              {step === 0 && <StepAddress address={address} setAddress={setAddress} city={city} setCity={setCity} stateVal={stateVal} setStateVal={setStateVal} zip={zip} setZip={setZip} lat={lat} setLat={setLat} lng={lng} setLng={setLng} distanceMiles={distanceMiles} setDistanceMiles={setDistanceMiles} outOfRange={outOfRange} setOutOfRange={setOutOfRange} globalConfig={globalConfig} />}
               {step === 1 && <StepContact name={name} setName={setName} email={email} setEmail={setEmail} phone={phone} setPhone={setPhone} />}
               {step === 2 && <StepServices selectedServices={selectedServices} toggleService={toggleService} />}
               {step === 3 && <StepDetails selectedServices={selectedServices} serviceInputs={serviceInputs} updateServiceInput={updateServiceInput} pricingResults={pricingResults} getServiceConfig={getServiceConfig} />}
@@ -278,97 +286,69 @@ export default function QuoteTool() {
               {step === 5 && <StepSchedule preferredDate={preferredDate} setPreferredDate={setPreferredDate} preferredTime={preferredTime} setPreferredTime={setPreferredTime} referralSource={referralSource} setReferralSource={setReferralSource} photos={photos} setPhotos={setPhotos} uploading={uploading} handlePhotoUpload={handlePhotoUpload} fileInputRef={fileInputRef} />}
 
               {/* Navigation */}
-              <div className="flex justify-between mt-8 pt-6 border-t">
+              <div className="flex justify-between mt-8 pt-4 border-t">
                 {step > 0 ? (
-                  <Button variant="outline" onClick={() => setStep(s => s - 1)}>
-                    <ArrowLeft className="w-4 h-4 mr-2" /> Back
+                  <Button variant="outline" onClick={() => setStep(step - 1)}>
+                    <ArrowLeft className="w-4 h-4 mr-1" /> Back
                   </Button>
                 ) : <div />}
                 {step < STEPS.length - 1 ? (
-                  <Button
-                    onClick={() => setStep(s => s + 1)}
-                    disabled={!canProceed()}
-                    className="bg-primary hover:bg-navy-light text-white font-semibold"
-                  >
-                    {step === 4 ? "Continue to Scheduling" : "Next"}
-                    <ArrowRight className="w-4 h-4 ml-2" />
+                  <Button onClick={() => setStep(step + 1)} disabled={!canProceed()} className="bg-primary hover:bg-navy-light text-white font-semibold">
+                    Next <ArrowRight className="w-4 h-4 ml-1" />
                   </Button>
                 ) : (
-                  <Button
-                    onClick={handleSubmit}
-                    disabled={submitMutation.isPending}
-                    className="bg-sky hover:bg-sky-light text-white font-bold px-8"
-                  >
-                    {submitMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <CheckCircle className="w-4 h-4 mr-2" />}
-                    {submitMutation.isPending ? "Submitting..." : `Submit Quote — $${quoteSummary.totalPrice.toFixed(2)}`}
+                  <Button onClick={handleSubmit} disabled={submitMutation.isPending} className="bg-primary hover:bg-navy-light text-white font-semibold px-8">
+                    {submitMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <CheckCircle className="w-4 h-4 mr-2" />}
+                    Submit Quote
                   </Button>
                 )}
               </div>
             </CardContent>
           </Card>
 
-          {/* Live price sidebar on larger screens */}
-          {step >= 2 && selectedServices.size > 0 && (
-            <Card className="mt-6 bg-navy text-white">
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-white/70">Estimated Total</p>
-                    <p className="font-heading font-bold text-2xl">${quoteSummary.totalPrice.toFixed(2)}</p>
-                  </div>
-                  <div className="text-right text-sm text-white/70">
-                    <p>{selectedServices.size} service{selectedServices.size > 1 ? "s" : ""}</p>
-                    {quoteSummary.bundleDiscount > 0 && (
-                      <p className="text-green-300">Bundle saves ${quoteSummary.bundleDiscount.toFixed(2)}</p>
-                    )}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          )}
+          {/* Trust badges */}
+          <div className="flex items-center justify-center gap-6 mt-6 text-xs text-muted-foreground">
+            <span className="flex items-center gap-1"><Shield className="w-4 h-4" /> Licensed & Insured</span>
+            <span className="flex items-center gap-1"><Star className="w-4 h-4" /> 5-Star Rated</span>
+            <span className="flex items-center gap-1"><CheckCircle className="w-4 h-4" /> Satisfaction Guaranteed</span>
+          </div>
         </div>
       </section>
     </SiteLayout>
   );
 }
 
-// ─── Step Components ─────────────────────────────────────────────────
+// ─── Step Components ──────────────────────────────────────────────────
 
-function StepAddress({ address, setAddress, city, setCity, stateVal, setStateVal, zip, setZip, setLat, setLng, distanceMiles, setDistanceMiles, outOfRange, setOutOfRange, globalConfig }: any) {
+function StepAddress({ address, setAddress, city, setCity, stateVal, setStateVal, zip, setZip, lat, setLat, lng, setLng, distanceMiles, setDistanceMiles, outOfRange, setOutOfRange, globalConfig }: any) {
   return (
     <div>
-      <h2 className="font-heading font-bold text-xl mb-1">Where is the property?</h2>
-      <p className="text-sm text-muted-foreground mb-6">Enter the address of the property you'd like serviced.</p>
+      <h2 className="font-heading font-bold text-xl mb-1">Where's your property?</h2>
+      <p className="text-sm text-muted-foreground mb-6">We need your address to calculate travel and provide accurate pricing.</p>
       <div className="space-y-4">
         <div>
-          <Label htmlFor="address">Street Address *</Label>
-          <Input id="address" value={address} onChange={e => setAddress(e.target.value)} placeholder="123 Main Street" className="text-base" />
+          <Label htmlFor="address"><MapPin className="w-4 h-4 inline mr-1" />Street Address</Label>
+          <Input id="address" value={address} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAddress(e.target.value)} placeholder="123 Main Street" />
         </div>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-3">
           <div className="col-span-1">
-            <Label htmlFor="city">City *</Label>
-            <Input id="city" value={city} onChange={e => setCity(e.target.value)} placeholder="Cookeville" />
+            <Label htmlFor="city">City</Label>
+            <Input id="city" value={city} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCity(e.target.value)} placeholder="Cookeville" />
           </div>
           <div>
             <Label htmlFor="state">State</Label>
-            <Input id="state" value={stateVal} onChange={e => setStateVal(e.target.value)} placeholder="TN" maxLength={2} />
+            <Input id="state" value={stateVal} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStateVal(e.target.value)} />
           </div>
           <div>
             <Label htmlFor="zip">ZIP</Label>
-            <Input id="zip" value={zip} onChange={e => setZip(e.target.value)} placeholder="38506" />
+            <Input id="zip" value={zip} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setZip(e.target.value)} placeholder="38501" />
           </div>
         </div>
         {outOfRange && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-sm text-red-700">
-            This address appears to be outside our {globalConfig.travelRadius}-mile service area. Please call us at {BUSINESS.phone} for a custom quote.
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm text-amber-800">
+            This address appears to be outside our service area ({globalConfig.travelRadius} mile radius). Please call us at {BUSINESS.phone} for availability.
           </div>
         )}
-        <div className="bg-secondary rounded-lg p-4 flex items-start gap-3">
-          <MapPin className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-          <div className="text-sm text-muted-foreground">
-            <p>We serve Cookeville, Baxter, Algood, Sparta, Livingston, and the surrounding Upper Cumberland area.</p>
-          </div>
-        </div>
       </div>
     </div>
   );
@@ -377,64 +357,60 @@ function StepAddress({ address, setAddress, city, setCity, stateVal, setStateVal
 function StepContact({ name, setName, email, setEmail, phone, setPhone }: any) {
   return (
     <div>
-      <h2 className="font-heading font-bold text-xl mb-1">Your Contact Information</h2>
-      <p className="text-sm text-muted-foreground mb-6">So we can send you the quote details and follow up.</p>
+      <h2 className="font-heading font-bold text-xl mb-1">Your contact info</h2>
+      <p className="text-sm text-muted-foreground mb-6">So we can send your quote and reach out to schedule.</p>
       <div className="space-y-4">
         <div>
-          <Label htmlFor="name">Full Name *</Label>
-          <Input id="name" value={name} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)} placeholder="John Smith" className="text-base" />
+          <Label htmlFor="name">Full Name</Label>
+          <Input id="name" value={name} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)} placeholder="John Smith" />
         </div>
         <div>
-          <Label htmlFor="email">Email Address *</Label>
-          <Input id="email" type="email" value={email} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)} placeholder="john@example.com" className="text-base" />
+          <Label htmlFor="email">Email</Label>
+          <Input id="email" type="email" value={email} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)} placeholder="john@example.com" />
         </div>
         <div>
-          <Label htmlFor="phone">Phone Number *</Label>
-          <Input id="phone" type="tel" value={phone} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPhone(e.target.value)} placeholder="(555) 123-4567" className="text-base" />
-        </div>
-        <div className="flex items-start gap-2 text-xs text-muted-foreground bg-secondary rounded-lg p-3">
-          <Shield className="w-4 h-4 shrink-0 mt-0.5" />
-          Your information is secure and will only be used to deliver your quote.
+          <Label htmlFor="phone">Phone</Label>
+          <Input id="phone" type="tel" value={phone} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPhone(e.target.value)} placeholder="(931) 555-0123" />
         </div>
       </div>
     </div>
   );
 }
 
-function StepServices({ selectedServices, toggleService }: { selectedServices: Set<string>; toggleService: (id: string) => void }) {
+function StepServices({ selectedServices, toggleService }: any) {
   return (
     <div>
-      <h2 className="font-heading font-bold text-xl mb-1">What services do you need?</h2>
-      <p className="text-sm text-muted-foreground mb-2">Select all that apply. Bundle 2+ services and save!</p>
-      {selectedServices.size >= 2 && (
-        <Badge className="bg-green-100 text-green-700 mb-4">
-          <Star className="w-3 h-3 mr-1" /> Bundle discount: {selectedServices.size >= 5 ? 20 : selectedServices.size >= 4 ? 15 : selectedServices.size >= 3 ? 10 : 5}% off!
-        </Badge>
-      )}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+      <h2 className="font-heading font-bold text-xl mb-1">What do you need?</h2>
+      <p className="text-sm text-muted-foreground mb-6">Select all services you're interested in. Bundle for savings!</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {QUOTABLE_SERVICES.map(svc => {
-          const Icon = ICON_MAP[svc.icon] || Droplets;
+          const Icon = ICON_MAP[svc.icon] || LayoutGrid;
           const selected = selectedServices.has(svc.id);
           return (
             <button
               key={svc.id}
               onClick={() => toggleService(svc.id)}
-              className={`flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all ${
+              className={`flex items-start gap-3 p-4 rounded-xl border-2 text-left transition-all ${
                 selected ? "border-primary bg-primary/5 shadow-md" : "border-border hover:border-primary/30 hover:shadow-sm"
               }`}
             >
-              <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${selected ? "bg-primary text-white" : "bg-secondary text-primary"}`}>
+              <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${selected ? "bg-primary text-white" : "bg-secondary text-muted-foreground"}`}>
                 <Icon className="w-5 h-5" />
               </div>
-              <div className="flex-1 min-w-0">
+              <div>
                 <p className="font-semibold text-sm">{svc.name}</p>
                 <p className="text-xs text-muted-foreground">{svc.desc}</p>
               </div>
-              {selected && <CheckCircle className="w-5 h-5 text-primary shrink-0" />}
+              {selected && <CheckCircle className="w-5 h-5 text-primary shrink-0 ml-auto" />}
             </button>
           );
         })}
       </div>
+      {selectedServices.size >= 2 && (
+        <div className="mt-4 bg-green-50 border border-green-200 rounded-lg p-3 text-sm text-green-800">
+          Bundle discount applied! {selectedServices.size} services selected.
+        </div>
+      )}
     </div>
   );
 }
@@ -461,6 +437,92 @@ function StepDetails({ selectedServices, serviceInputs, updateServiceInput, pric
   );
 }
 
+// ─── Premium Slider Input ─────────────────────────────────────────────
+
+function PremiumSlider({
+  label,
+  unit,
+  value,
+  min,
+  max,
+  step,
+  onChange,
+  icon,
+}: {
+  label: string;
+  unit: string;
+  value: number;
+  min: number;
+  max: number;
+  step: number;
+  onChange: (v: number) => void;
+  icon?: React.ReactNode;
+}) {
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <Label className="flex items-center gap-1.5">
+          {icon}
+          {label}
+        </Label>
+        <div className="bg-primary/10 rounded-lg px-3 py-1.5 flex items-center gap-1">
+          <span className="font-heading font-bold text-primary text-lg">{value}</span>
+          <span className="text-xs text-primary/70 font-medium">{unit}</span>
+        </div>
+      </div>
+      <div className="px-1">
+        <Slider
+          value={[value]}
+          min={min}
+          max={max}
+          step={step}
+          onValueChange={([v]) => onChange(v)}
+          className="[&_[data-slot=slider-thumb]]:w-5 [&_[data-slot=slider-thumb]]:h-5 [&_[data-slot=slider-thumb]]:border-2 [&_[data-slot=slider-thumb]]:shadow-md [&_[data-slot=slider-track]]:h-2"
+        />
+      </div>
+      <div className="flex justify-between text-[10px] text-muted-foreground px-1">
+        <span>{min} {unit}</span>
+        <span>{max} {unit}</span>
+      </div>
+    </div>
+  );
+}
+
+// ─── Fence Side Toggle ────────────────────────────────────────────────
+
+function FenceSideToggle({ value, onChange }: { value: 1 | 2; onChange: (v: 1 | 2) => void }) {
+  return (
+    <div className="space-y-2">
+      <Label className="flex items-center gap-1.5">
+        <FlipHorizontal className="w-4 h-4" />
+        Sides to Clean
+      </Label>
+      <div className="grid grid-cols-2 gap-2">
+        <button
+          onClick={() => onChange(1)}
+          className={`p-3 rounded-xl border-2 text-center transition-all ${
+            value === 1 ? "border-primary bg-primary/5 shadow-sm" : "border-border hover:border-primary/30"
+          }`}
+        >
+          <p className="font-semibold text-sm">One Side</p>
+          <p className="text-[10px] text-muted-foreground mt-0.5">Front or back only</p>
+        </button>
+        <button
+          onClick={() => onChange(2)}
+          className={`p-3 rounded-xl border-2 text-center transition-all ${
+            value === 2 ? "border-primary bg-primary/5 shadow-sm" : "border-border hover:border-primary/30"
+          }`}
+        >
+          <p className="font-semibold text-sm">Both Sides</p>
+          <p className="text-[10px] text-muted-foreground mt-0.5">Front & back</p>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Service Detail Form ──────────────────────────────────────────────
+
 function ServiceDetailForm({ serviceId, inputs, updateInput, config, price }: {
   serviceId: string; inputs: PricingInput; updateInput: (key: string, val: unknown) => void;
   config: ServiceConfig; price?: PricingResult;
@@ -468,131 +530,242 @@ function ServiceDetailForm({ serviceId, inputs, updateInput, config, price }: {
   const svc = QUOTABLE_SERVICES.find(s => s.id === serviceId);
   if (!svc) return null;
 
+  const sliderDef = SLIDER_DEFAULTS[serviceId];
+
   return (
-    <Card className="border-2">
-      <CardContent className="p-5">
-        <div className="flex items-center justify-between mb-4">
+    <Card className="border-2 overflow-hidden">
+      <CardContent className="p-0">
+        {/* Service header bar */}
+        <div className="flex items-center justify-between px-5 py-4 bg-secondary/50 border-b">
           <h3 className="font-heading font-bold text-lg">{svc.name}</h3>
-          {price && <span className="font-heading font-bold text-lg text-primary">${price.finalPrice.toFixed(2)}</span>}
+          {price && (
+            <div className="text-right">
+              <span className="font-heading font-bold text-xl text-primary">${price.finalPrice.toFixed(2)}</span>
+            </div>
+          )}
         </div>
 
-        {/* House Washing */}
-        {serviceId === "house_washing" && (
-          <div className="space-y-4">
-            <div>
-              <Label>Home Square Footage</Label>
-              <Input type="number" value={inputs.sqft || ""} onChange={e => updateInput("sqft", Number(e.target.value) || 0)} placeholder="e.g. 2000" />
-            </div>
-            <div>
-              <Label>Number of Stories</Label>
-              <RadioGroup value={String(inputs.stories || 1)} onValueChange={v => updateInput("stories", Number(v))}>
-                <div className="flex gap-4">
-                  {[1, 2, 3].map(n => (
-                    <div key={n} className="flex items-center gap-2">
-                      <RadioGroupItem value={String(n)} id={`stories-${n}`} />
-                      <Label htmlFor={`stories-${n}`}>{n}-Story</Label>
-                    </div>
-                  ))}
-                </div>
-              </RadioGroup>
-            </div>
-          </div>
-        )}
+        <div className="p-5 space-y-5">
+          {/* House Washing */}
+          {serviceId === "house_washing" && (
+            <>
+              <PremiumSlider
+                label="Home Square Footage"
+                unit="sq ft"
+                value={inputs.sqft || 1800}
+                min={500}
+                max={6000}
+                step={100}
+                onChange={v => updateInput("sqft", v)}
+                icon={<HomeIcon className="w-4 h-4" />}
+              />
+              <div>
+                <Label>Number of Stories</Label>
+                <RadioGroup value={String(inputs.stories || 1)} onValueChange={v => updateInput("stories", Number(v))}>
+                  <div className="flex gap-3 mt-2">
+                    {[1, 2, 3].map(n => (
+                      <label
+                        key={n}
+                        className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 cursor-pointer transition-all ${
+                          String(inputs.stories || 1) === String(n) ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"
+                        }`}
+                      >
+                        <RadioGroupItem value={String(n)} id={`stories-${n}`} />
+                        <span className="text-sm font-medium">{n}-Story</span>
+                      </label>
+                    ))}
+                  </div>
+                </RadioGroup>
+              </div>
+            </>
+          )}
 
-        {/* Window Cleaning */}
-        {serviceId === "window_cleaning" && (
-          <div className="space-y-4">
-            <div>
-              <Label>Number of Windows</Label>
-              <Input type="number" value={inputs.windowCount || ""} onChange={e => updateInput("windowCount", Number(e.target.value) || 0)} placeholder="e.g. 15" />
-            </div>
-            <WindowPackageSelector value={inputs.packageTier} onChange={v => updateInput("packageTier", v)} />
-          </div>
-        )}
+          {/* Window Cleaning */}
+          {serviceId === "window_cleaning" && (
+            <>
+              <PremiumSlider
+                label="Number of Windows"
+                unit="windows"
+                value={inputs.windowCount || 15}
+                min={1}
+                max={80}
+                step={1}
+                onChange={v => updateInput("windowCount", v)}
+                icon={<SquareStack className="w-4 h-4" />}
+              />
+              <WindowPackageSelector
+                value={inputs.packageTier}
+                onChange={v => updateInput("packageTier", v)}
+                windowCount={inputs.windowCount || 15}
+                config={config}
+              />
+            </>
+          )}
 
-        {/* Roof Cleaning */}
-        {serviceId === "roof_cleaning" && (
-          <div className="space-y-4">
-            <div>
-              <Label>Roof Square Footage</Label>
-              <Input type="number" value={inputs.sqft || ""} onChange={e => updateInput("sqft", Number(e.target.value) || 0)} placeholder="e.g. 2000" />
-            </div>
-            <div>
-              <Label>Roof Pitch</Label>
-              <RadioGroup value={inputs.roofPitch || "low"} onValueChange={v => updateInput("roofPitch", v)}>
-                <div className="flex gap-4">
-                  {[{ v: "low", l: "Low Pitch" }, { v: "medium", l: "Medium Pitch" }, { v: "steep", l: "Steep Pitch" }].map(p => (
-                    <div key={p.v} className="flex items-center gap-2">
-                      <RadioGroupItem value={p.v} id={`pitch-${p.v}`} />
-                      <Label htmlFor={`pitch-${p.v}`}>{p.l}</Label>
-                    </div>
-                  ))}
-                </div>
-              </RadioGroup>
-            </div>
-          </div>
-        )}
+          {/* Roof Cleaning */}
+          {serviceId === "roof_cleaning" && (
+            <>
+              <PremiumSlider
+                label="Roof Square Footage"
+                unit="sq ft"
+                value={inputs.sqft || 2000}
+                min={500}
+                max={6000}
+                step={100}
+                onChange={v => updateInput("sqft", v)}
+                icon={<Triangle className="w-4 h-4" />}
+              />
+              <div>
+                <Label>Roof Pitch</Label>
+                <RadioGroup value={inputs.roofPitch || "low"} onValueChange={v => updateInput("roofPitch", v)}>
+                  <div className="flex gap-3 mt-2">
+                    {[{ v: "low", l: "Low" }, { v: "medium", l: "Medium" }, { v: "steep", l: "Steep" }].map(p => (
+                      <label
+                        key={p.v}
+                        className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 cursor-pointer transition-all ${
+                          (inputs.roofPitch || "low") === p.v ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"
+                        }`}
+                      >
+                        <RadioGroupItem value={p.v} id={`pitch-${p.v}`} />
+                        <span className="text-sm font-medium">{p.l}</span>
+                      </label>
+                    ))}
+                  </div>
+                </RadioGroup>
+              </div>
+            </>
+          )}
 
-        {/* Gutter Cleaning */}
-        {serviceId === "gutter_cleaning" && (
-          <div className="space-y-4">
-            <div>
-              <Label>Gutter Size</Label>
-              <Select value={inputs.sizeSelection || "M"} onValueChange={v => updateInput("sizeSelection", v)}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  {Object.entries(config.sizeTiers || {}).map(([k]) => (
-                    <SelectItem key={k} value={k}>{SIZE_LABELS[k]}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <Label>Number of Stories</Label>
-              <RadioGroup value={String(inputs.stories || 1)} onValueChange={v => updateInput("stories", Number(v))}>
-                <div className="flex gap-4">
-                  {[1, 2, 3].map(n => (
-                    <div key={n} className="flex items-center gap-2">
-                      <RadioGroupItem value={String(n)} id={`gstories-${n}`} />
-                      <Label htmlFor={`gstories-${n}`}>{n}-Story</Label>
-                    </div>
-                  ))}
-                </div>
-              </RadioGroup>
-            </div>
-          </div>
-        )}
+          {/* Gutter Cleaning */}
+          {serviceId === "gutter_cleaning" && (
+            <>
+              <PremiumSlider
+                label="Gutter Length"
+                unit="linear ft"
+                value={inputs.linearFeet || sliderDef?.default || 150}
+                min={sliderDef?.min || 50}
+                max={sliderDef?.max || 400}
+                step={sliderDef?.step || 10}
+                onChange={v => updateInput("linearFeet", v)}
+                icon={<Ruler className="w-4 h-4" />}
+              />
+              <div>
+                <Label>Number of Stories</Label>
+                <RadioGroup value={String(inputs.stories || 1)} onValueChange={v => updateInput("stories", Number(v))}>
+                  <div className="flex gap-3 mt-2">
+                    {[1, 2, 3].map(n => (
+                      <label
+                        key={n}
+                        className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 cursor-pointer transition-all ${
+                          String(inputs.stories || 1) === String(n) ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"
+                        }`}
+                      >
+                        <RadioGroupItem value={String(n)} id={`gstories-${n}`} />
+                        <span className="text-sm font-medium">{n}-Story</span>
+                      </label>
+                    ))}
+                  </div>
+                </RadioGroup>
+              </div>
+            </>
+          )}
 
-        {/* Size-tier services */}
-        {["driveway_cleaning", "patio_cleaning", "walkway_cleaning", "deck_cleaning"].includes(serviceId) && (
-          <div className="space-y-4">
-            <div>
-              <Label>Size</Label>
-              <Select value={inputs.sizeSelection || "M"} onValueChange={v => updateInput("sizeSelection", v)}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  {Object.entries(config.sizeTiers || {}).map(([k]) => (
-                    <SelectItem key={k} value={k}>{SIZE_LABELS[k]}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        )}
+          {/* Fence Cleaning */}
+          {serviceId === "fence_cleaning" && (
+            <>
+              <PremiumSlider
+                label="Fence Length"
+                unit="linear ft"
+                value={inputs.linearFeet || sliderDef?.default || 100}
+                min={sliderDef?.min || 20}
+                max={sliderDef?.max || 500}
+                step={sliderDef?.step || 10}
+                onChange={v => updateInput("linearFeet", v)}
+                icon={<Ruler className="w-4 h-4" />}
+              />
+              <FenceSideToggle
+                value={(inputs.fenceSides as 1 | 2) || 1}
+                onChange={v => updateInput("fenceSides", v)}
+              />
+            </>
+          )}
 
+          {/* Deck Cleaning */}
+          {serviceId === "deck_cleaning" && (
+            <PremiumSlider
+              label="Deck Size"
+              unit="sq ft"
+              value={inputs.sqft || sliderDef?.default || 300}
+              min={sliderDef?.min || 50}
+              max={sliderDef?.max || 1200}
+              step={sliderDef?.step || 25}
+              onChange={v => updateInput("sqft", v)}
+              icon={<Ruler className="w-4 h-4" />}
+            />
+          )}
 
+          {/* Driveway / Concrete */}
+          {serviceId === "driveway_cleaning" && (
+            <PremiumSlider
+              label="Surface Area"
+              unit="sq ft"
+              value={inputs.sqft || SLIDER_DEFAULTS.driveway_cleaning.default}
+              min={SLIDER_DEFAULTS.driveway_cleaning.min}
+              max={SLIDER_DEFAULTS.driveway_cleaning.max}
+              step={SLIDER_DEFAULTS.driveway_cleaning.step}
+              onChange={v => updateInput("sqft", v)}
+              icon={<Ruler className="w-4 h-4" />}
+            />
+          )}
+
+          {/* Patio Cleaning */}
+          {serviceId === "patio_cleaning" && (
+            <PremiumSlider
+              label="Patio Area"
+              unit="sq ft"
+              value={inputs.sqft || SLIDER_DEFAULTS.patio_cleaning.default}
+              min={SLIDER_DEFAULTS.patio_cleaning.min}
+              max={SLIDER_DEFAULTS.patio_cleaning.max}
+              step={SLIDER_DEFAULTS.patio_cleaning.step}
+              onChange={v => updateInput("sqft", v)}
+              icon={<Ruler className="w-4 h-4" />}
+            />
+          )}
+
+          {/* Walkway Cleaning */}
+          {serviceId === "walkway_cleaning" && (
+            <PremiumSlider
+              label="Walkway Area"
+              unit="sq ft"
+              value={inputs.sqft || SLIDER_DEFAULTS.walkway_cleaning.default}
+              min={SLIDER_DEFAULTS.walkway_cleaning.min}
+              max={SLIDER_DEFAULTS.walkway_cleaning.max}
+              step={SLIDER_DEFAULTS.walkway_cleaning.step}
+              onChange={v => updateInput("sqft", v)}
+              icon={<Ruler className="w-4 h-4" />}
+            />
+          )}
+        </div>
       </CardContent>
     </Card>
   );
 }
 
-function WindowPackageSelector({ value, onChange }: { value?: string; onChange: (v: string) => void }) {
+// ─── Window Package Selector with Per-Tier Pricing ────────────────────
+
+function WindowPackageSelector({ value, onChange, windowCount, config }: {
+  value?: string; onChange: (v: string) => void; windowCount: number; config: ServiceConfig;
+}) {
+  const extRate = config.exteriorPerWindow || 11;
+  const packageMults = config.windowPackageMultipliers || { good: 1.0, better: 1.35, best: 1.75 };
+
   const tiers = [
     {
       id: "good",
       name: "Expert Essential",
       included: ["Exterior Glass Cleaning", "Screen Removal & Replacement"],
       notIncluded: ["Interior Glass", "Frames & Sills", "Deep Track & Screen Scrub"],
+      price: Math.round(windowCount * extRate * (packageMults.good || 1.0) * 100) / 100,
     },
     {
       id: "better",
@@ -600,17 +773,20 @@ function WindowPackageSelector({ value, onChange }: { value?: string; onChange: 
       badge: "Most Popular",
       included: ["Exterior Glass Cleaning", "Interior Glass Cleaning", "Frames Wiped Down", "Interior Ledges Wiped"],
       notIncluded: ["Sills", "Deep Track Cleaning or Screen Scrub"],
+      price: Math.round(windowCount * extRate * (packageMults.better || 1.35) * 100) / 100,
     },
     {
       id: "best",
       name: "Platinum Perfection",
       included: ["Exterior & Interior Glass", "Frames, Sills & Ledges", "Deep Screen Washing (Soap & Scrub)", "Deep Track Detailing (Clean & Rinse)"],
       notIncluded: [],
+      price: Math.round(windowCount * extRate * (packageMults.best || 1.75) * 100) / 100,
     },
   ];
+
   return (
     <div>
-      <Label className="mb-2 block">Window Cleaning Package</Label>
+      <Label className="mb-3 block">Choose Your Package</Label>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {tiers.map(t => (
           <button
@@ -625,7 +801,8 @@ function WindowPackageSelector({ value, onChange }: { value?: string; onChange: 
                 {t.badge}
               </span>
             )}
-            <p className="font-bold text-sm mb-2">{t.name}</p>
+            <p className="font-bold text-sm mb-1">{t.name}</p>
+            <p className="font-heading font-bold text-primary text-lg mb-2">${t.price.toFixed(2)}</p>
             <div className="space-y-1">
               {t.included.map(item => (
                 <p key={item} className="text-xs flex items-start gap-1.5">
@@ -664,6 +841,9 @@ function StepReview({ pricingResults, quoteSummary, serviceInputs, address, name
                   <Badge variant="secondary" className="text-xs mt-1">
                     {serviceInputs[r.serviceType].packageTier === "best" ? "Platinum Perfection" : serviceInputs[r.serviceType].packageTier === "better" ? "Signature Sparkle" : "Expert Essential"}
                   </Badge>
+                )}
+                {r.serviceType === "fence_cleaning" && serviceInputs[r.serviceType]?.fenceSides === 2 && (
+                  <Badge variant="secondary" className="text-xs mt-1">Both Sides</Badge>
                 )}
               </div>
               <span className="font-heading font-bold">${r.finalPrice.toFixed(2)}</span>
@@ -791,12 +971,13 @@ function getDefaultInputs(serviceId: string): PricingInput {
     case "house_washing": return { serviceType: serviceId, sqft: 1800, stories: 1, packageTier: "good" };
     case "window_cleaning": return { serviceType: serviceId, windowCount: 15, includeExterior: true, includeInterior: false, includeScreens: false, packageTier: "good" };
     case "roof_cleaning": return { serviceType: serviceId, sqft: 2000, roofPitch: "low" };
-    case "gutter_cleaning": return { serviceType: serviceId, sizeSelection: "M", stories: 1 };
-    case "driveway_cleaning": return { serviceType: serviceId, sizeSelection: "M" };
-    case "patio_cleaning": return { serviceType: serviceId, sizeSelection: "M" };
-    case "walkway_cleaning": return { serviceType: serviceId, sizeSelection: "M" };
-    case "deck_cleaning": return { serviceType: serviceId, sizeSelection: "M" };
-    default: return { serviceType: serviceId, sizeSelection: "M" };
+    case "gutter_cleaning": return { serviceType: serviceId, linearFeet: 150, stories: 1 };
+    case "fence_cleaning": return { serviceType: serviceId, linearFeet: 100, fenceSides: 1 };
+    case "deck_cleaning": return { serviceType: serviceId, sqft: 300 };
+    case "driveway_cleaning": return { serviceType: serviceId, sqft: 500 };
+    case "patio_cleaning": return { serviceType: serviceId, sqft: 250 };
+    case "walkway_cleaning": return { serviceType: serviceId, sqft: 100 };
+    default: return { serviceType: serviceId, sqft: 300 };
   }
 }
 

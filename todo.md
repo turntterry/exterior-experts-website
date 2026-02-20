@@ -104,3 +104,9 @@
 - [x] Write vitest tests for admin pricing list/update procedures and access control
 - [x] Add visible admin link/button in site navigation for logged-in admin users
 - [x] Move admin link from header to footer with discreet non-obvious label
+- [x] Replace Small/Medium/Large dropdowns with premium sliders (linear ft / sqft) for fence, deck, gutter, concrete, patio, walkway services
+- [x] Add one-side / both-sides toggle for fence cleaning
+- [x] Add per-package price multipliers for window cleaning tiers (Essential, Sparkle, Perfection)
+- [x] Make quote tool inputs look more premium with styled sliders and clean controls
+- [x] Update pricing engine to support slider values, fence sides, and window package multipliers
+- [x] Update admin pricing editor for new fields (fence sides multiplier, window package multipliers)

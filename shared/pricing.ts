@@ -10,12 +10,14 @@ export interface PricingInput {
   includeInterior?: boolean;
   includeExterior?: boolean;
   includeScreens?: boolean;
-  // Size-tier services (driveway, patio, walkway, deck, fence, gutter, detached)
+  // Size-tier services (legacy support)
   sizeSelection?: "S" | "M" | "L" | "XL" | "2XL";
+  // Direct measurement inputs (slider-based)
+  linearFeet?: number;
   // Roof
   roofPitch?: "low" | "medium" | "steep";
-  // Gutter
-  linearFeet?: number;
+  // Fence
+  fenceSides?: 1 | 2;
   // Package tier
   packageTier?: "good" | "better" | "best";
 }
@@ -51,6 +53,18 @@ export interface ServiceConfig {
   ratePerLinearFt?: number;
   pitchMultipliers?: Record<string, number>;
   sizeTiers?: Record<string, number>;
+  fenceSidesMultiplier?: number; // multiplier for both sides (default 1.75)
+  windowPackageMultipliers?: {
+    good: number;
+    better: number;
+    best: number;
+  };
+  // Slider range config
+  sliderMin?: number;
+  sliderMax?: number;
+  sliderStep?: number;
+  sliderDefault?: number;
+  sliderUnit?: string; // "sq ft" or "linear ft"
 }
 
 export interface GlobalConfig {
@@ -65,20 +79,12 @@ export interface GlobalConfig {
   freeRadius: number;
 }
 
-// Package tier multipliers
-const PACKAGE_MULTIPLIERS = {
-  good: 1.0,
-  better: 1.15,
-  best: 1.3,
-};
-
 export function calculateServicePrice(
   input: PricingInput,
   config: ServiceConfig
 ): PricingResult {
   const breakdown: string[] = [];
   let basePrice = 0;
-  const tierMult = PACKAGE_MULTIPLIERS[input.packageTier || "good"];
 
   switch (input.serviceType) {
     case "house_washing": {
@@ -95,23 +101,18 @@ export function calculateServicePrice(
     }
     case "window_cleaning": {
       const count = input.windowCount || 10;
+      const tier = input.packageTier || "good";
+      const packageMults = config.windowPackageMultipliers || { good: 1.0, better: 1.35, best: 1.75 };
+      const tierMult = packageMults[tier] || 1.0;
       const extRate = config.exteriorPerWindow || 11;
-      const intRate = config.interiorPerWindow || 10;
-      const screenRate = config.screenPerWindow || 4;
-      let windowTotal = 0;
-      if (input.includeExterior !== false) {
-        windowTotal += count * extRate;
-        breakdown.push(`${count} windows × $${extRate} (exterior) = $${(count * extRate).toFixed(2)}`);
+
+      // Base price is exterior rate × count × package multiplier
+      basePrice = count * extRate * tierMult;
+      const tierName = tier === "best" ? "Platinum Perfection" : tier === "better" ? "Signature Sparkle" : "Expert Essential";
+      breakdown.push(`${count} windows × $${extRate}/window = $${(count * extRate).toFixed(2)}`);
+      if (tierMult !== 1.0) {
+        breakdown.push(`${tierName} package: ×${tierMult}`);
       }
-      if (input.includeInterior) {
-        windowTotal += count * intRate;
-        breakdown.push(`${count} windows × $${intRate} (interior) = $${(count * intRate).toFixed(2)}`);
-      }
-      if (input.includeScreens) {
-        windowTotal += count * screenRate;
-        breakdown.push(`${count} screens × $${screenRate} = $${(count * screenRate).toFixed(2)}`);
-      }
-      basePrice = windowTotal;
       break;
     }
     case "roof_cleaning": {
@@ -127,45 +128,56 @@ export function calculateServicePrice(
       break;
     }
     case "gutter_cleaning": {
-      if (input.sizeSelection && config.sizeTiers) {
-        const linearFt = config.sizeTiers[input.sizeSelection] || 150;
-        const rate = config.ratePerLinearFt || 1.50;
-        const stories = input.stories || 1;
-        const storyMult = config.storyMultipliers?.[String(stories)] || 1.0;
-        basePrice = linearFt * rate * storyMult;
-        breakdown.push(`${linearFt} linear ft × $${rate}/ft = $${(linearFt * rate).toFixed(2)}`);
-        if (storyMult !== 1.0) {
-          breakdown.push(`${stories}-story multiplier: ×${storyMult}`);
-        }
-      } else {
-        const linearFt = input.linearFeet || 150;
-        const rate = config.ratePerLinearFt || 1.50;
-        basePrice = linearFt * rate;
-        breakdown.push(`${linearFt} linear ft × $${rate}/ft = $${(linearFt * rate).toFixed(2)}`);
+      const linearFt = input.linearFeet || config.sliderDefault || 150;
+      const rate = config.ratePerLinearFt || 1.50;
+      const stories = input.stories || 1;
+      const storyMult = config.storyMultipliers?.[String(stories)] || 1.0;
+      basePrice = linearFt * rate * storyMult;
+      breakdown.push(`${linearFt} linear ft × $${rate}/ft = $${(linearFt * rate).toFixed(2)}`);
+      if (storyMult !== 1.0) {
+        breakdown.push(`${stories}-story multiplier: ×${storyMult}`);
       }
       break;
     }
+    case "fence_cleaning": {
+      const linearFt = input.linearFeet || config.sliderDefault || 100;
+      const rate = config.ratePerLinearFt || 1.25;
+      const sides = input.fenceSides || 1;
+      const sidesMult = sides === 2 ? (config.fenceSidesMultiplier || 1.75) : 1.0;
+      basePrice = linearFt * rate * sidesMult;
+      breakdown.push(`${linearFt} linear ft × $${rate}/ft = $${(linearFt * rate).toFixed(2)}`);
+      if (sides === 2) {
+        breakdown.push(`Both sides: ×${sidesMult}`);
+      }
+      break;
+    }
+    case "deck_cleaning": {
+      // Deck uses sqft slider
+      const sqft = input.sqft || config.sliderDefault || 300;
+      const rate = config.ratePerSqft || 0.50;
+      basePrice = sqft * rate;
+      breakdown.push(`${sqft} sq ft × $${rate}/sq ft = $${basePrice.toFixed(2)}`);
+      break;
+    }
     default: {
-      // Size-tier based services: driveway, patio, walkway, deck, fence, detached
-      if (input.sizeSelection && config.sizeTiers) {
+      // Size-tier based services: driveway, patio, walkway, detached
+      // Support both slider (sqft/linearFeet) and legacy size selection
+      if (input.sqft) {
+        const rate = config.ratePerSqft || 0.20;
+        basePrice = input.sqft * rate;
+        breakdown.push(`${input.sqft} sq ft × $${rate}/sq ft = $${basePrice.toFixed(2)}`);
+      } else if (input.linearFeet) {
+        const rate = config.ratePerLinearFt || 0.20;
+        basePrice = input.linearFeet * rate;
+        breakdown.push(`${input.linearFeet} linear ft × $${rate}/ft = $${basePrice.toFixed(2)}`);
+      } else if (input.sizeSelection && config.sizeTiers) {
         const sqft = config.sizeTiers[input.sizeSelection] || 0;
         const rate = config.ratePerSqft || config.ratePerLinearFt || 0.20;
         basePrice = sqft * rate;
         breakdown.push(`Size ${input.sizeSelection} (${sqft} sq ft) × $${rate}/sq ft = $${basePrice.toFixed(2)}`);
-      } else if (input.sqft) {
-        const rate = config.ratePerSqft || 0.20;
-        basePrice = input.sqft * rate;
-        breakdown.push(`${input.sqft} sq ft × $${rate}/sq ft = $${basePrice.toFixed(2)}`);
       }
       break;
     }
-  }
-
-  // Apply package tier
-  if (tierMult !== 1.0) {
-    basePrice *= tierMult;
-    const tierName = input.packageTier === "best" ? "Best" : "Better";
-    breakdown.push(`${tierName} package: ×${tierMult}`);
   }
 
   // Enforce minimum

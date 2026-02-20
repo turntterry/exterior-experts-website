@@ -11,9 +11,8 @@ const houseWashConfig: ServiceConfig = {
 
 const windowConfig: ServiceConfig = {
   exteriorPerWindow: 11,
-  interiorPerWindow: 10,
-  screenPerWindow: 4,
   minPrice: 250,
+  windowPackageMultipliers: { good: 1.0, better: 1.35, best: 1.75 },
 };
 
 const roofConfig: ServiceConfig = {
@@ -25,7 +24,6 @@ const roofConfig: ServiceConfig = {
 const gutterConfig: ServiceConfig = {
   ratePerLinearFt: 1.50,
   minPrice: 175,
-  sizeTiers: { S: 80, M: 150, L: 250, XL: 350, "2XL": 500 },
   storyMultipliers: { "1": 1.0, "2": 1.3 },
 };
 
@@ -39,6 +37,17 @@ const patioConfig: ServiceConfig = {
   ratePerSqft: 0.55,
   minPrice: 100,
   sizeTiers: { S: 100, M: 200, L: 350, XL: 500, "2XL": 750 },
+};
+
+const deckConfig: ServiceConfig = {
+  ratePerSqft: 0.50,
+  minPrice: 100,
+};
+
+const fenceConfig: ServiceConfig = {
+  ratePerLinearFt: 1.25,
+  minPrice: 100,
+  fenceSidesMultiplier: 1.75,
 };
 
 const globalConfig: GlobalConfig = {
@@ -98,56 +107,59 @@ describe("House Washing pricing", () => {
     expect(result.finalPrice).toBe(350);
     expect(result.minApplied).toBe(true);
   });
-
-  it("applies Better package tier", () => {
-    const result = calculateServicePrice(
-      { serviceType: "house_washing", sqft: 3000, stories: 1, packageTier: "better" },
-      houseWashConfig
-    );
-    // 3000 * 0.14 * 1.15 = 483
-    expect(result.finalPrice).toBe(483);
-  });
-
-  it("applies Best package tier", () => {
-    const result = calculateServicePrice(
-      { serviceType: "house_washing", sqft: 3000, stories: 1, packageTier: "best" },
-      houseWashConfig
-    );
-    // 3000 * 0.14 * 1.3 = 546
-    expect(result.finalPrice).toBe(546);
-  });
 });
 
-// ─── Window Cleaning Tests ──────────────────────────────────────────
+// ─── Window Cleaning Tests (Package Multipliers) ────────────────────
 
-describe("Window Cleaning pricing", () => {
-  it("calculates exterior-only window cleaning", () => {
+describe("Window Cleaning pricing with package multipliers", () => {
+  it("calculates Expert Essential (good) tier", () => {
     const result = calculateServicePrice(
-      { serviceType: "window_cleaning", windowCount: 20, includeExterior: true },
+      { serviceType: "window_cleaning", windowCount: 20, packageTier: "good" },
       windowConfig
     );
-    // 20 * 11 = 220, min 250
+    // 20 * 11 * 1.0 = 220, min 250
+    expect(result.finalPrice).toBe(250);
+    expect(result.basePrice).toBe(220);
+    expect(result.minApplied).toBe(true);
+  });
+
+  it("calculates Signature Sparkle (better) tier", () => {
+    const result = calculateServicePrice(
+      { serviceType: "window_cleaning", windowCount: 20, packageTier: "better" },
+      windowConfig
+    );
+    // 20 * 11 * 1.35 = 297
+    expect(result.finalPrice).toBe(297);
+    expect(result.minApplied).toBe(false);
+  });
+
+  it("calculates Platinum Perfection (best) tier", () => {
+    const result = calculateServicePrice(
+      { serviceType: "window_cleaning", windowCount: 20, packageTier: "best" },
+      windowConfig
+    );
+    // 20 * 11 * 1.75 = 385
+    expect(result.finalPrice).toBe(385);
+    expect(result.minApplied).toBe(false);
+  });
+
+  it("defaults to good tier when no package specified", () => {
+    const result = calculateServicePrice(
+      { serviceType: "window_cleaning", windowCount: 15 },
+      windowConfig
+    );
+    // 15 * 11 * 1.0 = 165, min 250
     expect(result.finalPrice).toBe(250);
     expect(result.minApplied).toBe(true);
   });
 
-  it("calculates exterior + interior", () => {
+  it("calculates large window count with best tier", () => {
     const result = calculateServicePrice(
-      { serviceType: "window_cleaning", windowCount: 20, includeExterior: true, includeInterior: true },
+      { serviceType: "window_cleaning", windowCount: 30, packageTier: "best" },
       windowConfig
     );
-    // 20 * 11 + 20 * 10 = 220 + 200 = 420
-    expect(result.finalPrice).toBe(420);
-    expect(result.minApplied).toBe(false);
-  });
-
-  it("calculates full service with screens", () => {
-    const result = calculateServicePrice(
-      { serviceType: "window_cleaning", windowCount: 15, includeExterior: true, includeInterior: true, includeScreens: true },
-      windowConfig
-    );
-    // 15*11 + 15*10 + 15*4 = 165 + 150 + 60 = 375
-    expect(result.finalPrice).toBe(375);
+    // 30 * 11 * 1.75 = 577.50
+    expect(result.finalPrice).toBe(577.5);
   });
 });
 
@@ -184,21 +196,21 @@ describe("Roof Cleaning pricing", () => {
   });
 });
 
-// ─── Gutter Cleaning Tests ──────────────────────────────────────────
+// ─── Gutter Cleaning Tests (Slider-based) ───────────────────────────
 
-describe("Gutter Cleaning pricing", () => {
-  it("calculates by size tier", () => {
+describe("Gutter Cleaning pricing (slider-based)", () => {
+  it("calculates by linear feet", () => {
     const result = calculateServicePrice(
-      { serviceType: "gutter_cleaning", sizeSelection: "M", stories: 1 },
+      { serviceType: "gutter_cleaning", linearFeet: 150, stories: 1 },
       gutterConfig
     );
-    // 150 linear ft * 1.50 = 225
+    // 150 * 1.50 = 225
     expect(result.finalPrice).toBe(225);
   });
 
   it("applies 2-story multiplier", () => {
     const result = calculateServicePrice(
-      { serviceType: "gutter_cleaning", sizeSelection: "M", stories: 2 },
+      { serviceType: "gutter_cleaning", linearFeet: 150, stories: 2 },
       gutterConfig
     );
     // 150 * 1.50 * 1.3 = 292.50
@@ -207,21 +219,104 @@ describe("Gutter Cleaning pricing", () => {
 
   it("applies minimum for small gutters", () => {
     const result = calculateServicePrice(
-      { serviceType: "gutter_cleaning", sizeSelection: "S", stories: 1 },
+      { serviceType: "gutter_cleaning", linearFeet: 50, stories: 1 },
       gutterConfig
     );
-    // 80 * 1.50 = 120, min 175
+    // 50 * 1.50 = 75, min 175
     expect(result.finalPrice).toBe(175);
+    expect(result.minApplied).toBe(true);
+  });
+
+  it("calculates large gutter job", () => {
+    const result = calculateServicePrice(
+      { serviceType: "gutter_cleaning", linearFeet: 300, stories: 1 },
+      gutterConfig
+    );
+    // 300 * 1.50 = 450
+    expect(result.finalPrice).toBe(450);
+  });
+});
+
+// ─── Fence Cleaning Tests (Slider + Sides) ──────────────────────────
+
+describe("Fence Cleaning pricing (slider + sides)", () => {
+  it("calculates one side of fence", () => {
+    const result = calculateServicePrice(
+      { serviceType: "fence_cleaning", linearFeet: 100, fenceSides: 1 },
+      fenceConfig
+    );
+    // 100 * 1.25 * 1.0 = 125
+    expect(result.finalPrice).toBe(125);
+    expect(result.minApplied).toBe(false);
+  });
+
+  it("calculates both sides of fence", () => {
+    const result = calculateServicePrice(
+      { serviceType: "fence_cleaning", linearFeet: 100, fenceSides: 2 },
+      fenceConfig
+    );
+    // 100 * 1.25 * 1.75 = 218.75
+    expect(result.finalPrice).toBe(218.75);
+  });
+
+  it("applies minimum for small fence", () => {
+    const result = calculateServicePrice(
+      { serviceType: "fence_cleaning", linearFeet: 30, fenceSides: 1 },
+      fenceConfig
+    );
+    // 30 * 1.25 = 37.50, min 100
+    expect(result.finalPrice).toBe(100);
+    expect(result.minApplied).toBe(true);
+  });
+
+  it("defaults to one side when fenceSides not specified", () => {
+    const result = calculateServicePrice(
+      { serviceType: "fence_cleaning", linearFeet: 100 },
+      fenceConfig
+    );
+    // 100 * 1.25 * 1.0 = 125
+    expect(result.finalPrice).toBe(125);
+  });
+
+  it("calculates large fence both sides", () => {
+    const result = calculateServicePrice(
+      { serviceType: "fence_cleaning", linearFeet: 200, fenceSides: 2 },
+      fenceConfig
+    );
+    // 200 * 1.25 * 1.75 = 437.50
+    expect(result.finalPrice).toBe(437.5);
+  });
+});
+
+// ─── Deck Cleaning Tests (Slider-based) ─────────────────────────────
+
+describe("Deck Cleaning pricing (slider-based)", () => {
+  it("calculates by sqft", () => {
+    const result = calculateServicePrice(
+      { serviceType: "deck_cleaning", sqft: 400 },
+      deckConfig
+    );
+    // 400 * 0.50 = 200
+    expect(result.finalPrice).toBe(200);
+  });
+
+  it("applies minimum for small deck", () => {
+    const result = calculateServicePrice(
+      { serviceType: "deck_cleaning", sqft: 100 },
+      deckConfig
+    );
+    // 100 * 0.50 = 50, min 100
+    expect(result.finalPrice).toBe(100);
     expect(result.minApplied).toBe(true);
   });
 });
 
-// ─── Driveway Cleaning Tests ────────────────────────────────────────
+// ─── Driveway Cleaning Tests (legacy size tiers still work) ─────────
 
 describe("Driveway Cleaning pricing", () => {
-  it("calculates by size tier", () => {
+  it("calculates by sqft slider", () => {
     const result = calculateServicePrice(
-      { serviceType: "driveway_cleaning", sizeSelection: "M" },
+      { serviceType: "driveway_cleaning", sqft: 600 },
       drivewayConfig
     );
     // 600 * 0.20 = 120, min 150
@@ -229,7 +324,17 @@ describe("Driveway Cleaning pricing", () => {
     expect(result.minApplied).toBe(true);
   });
 
-  it("calculates large driveway", () => {
+  it("calculates large driveway by sqft", () => {
+    const result = calculateServicePrice(
+      { serviceType: "driveway_cleaning", sqft: 1500 },
+      drivewayConfig
+    );
+    // 1500 * 0.20 = 300
+    expect(result.finalPrice).toBe(300);
+    expect(result.minApplied).toBe(false);
+  });
+
+  it("still supports legacy size tier selection", () => {
     const result = calculateServicePrice(
       { serviceType: "driveway_cleaning", sizeSelection: "XL" },
       drivewayConfig
@@ -243,7 +348,16 @@ describe("Driveway Cleaning pricing", () => {
 // ─── Patio Cleaning Tests ───────────────────────────────────────────
 
 describe("Patio Cleaning pricing", () => {
-  it("calculates by size tier", () => {
+  it("calculates by sqft slider", () => {
+    const result = calculateServicePrice(
+      { serviceType: "patio_cleaning", sqft: 350 },
+      patioConfig
+    );
+    // 350 * 0.55 = 192.50
+    expect(result.finalPrice).toBe(192.5);
+  });
+
+  it("still supports legacy size tier", () => {
     const result = calculateServicePrice(
       { serviceType: "patio_cleaning", sizeSelection: "L" },
       patioConfig
