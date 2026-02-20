@@ -102,3 +102,4 @@
 - [x] Add sample quote preview per service
 - [x] Add unsaved changes indicator and Save All button
 - [x] Write vitest tests for admin pricing list/update procedures and access control
+- [x] Add visible admin link/button in site navigation for logged-in admin users

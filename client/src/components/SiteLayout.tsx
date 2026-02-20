@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { BUSINESS, SERVICES, LOCATIONS } from "@shared/data";
-import { Phone, Mail, MapPin, Menu, X, ChevronDown } from "lucide-react";
+import { Phone, Mail, MapPin, Menu, X, ChevronDown, Settings, LogIn, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/_core/hooks/useAuth";
+import { getLoginUrl } from "@/const";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -118,8 +120,9 @@ function Header() {
           ))}
         </nav>
 
-        {/* CTA + Mobile Toggle */}
+        {/* CTA + Admin + Mobile Toggle */}
         <div className="flex items-center gap-3">
+          <AdminHeaderButton />
           <Link href="/instant-quote">
             <Button className="bg-primary hover:bg-navy-light text-white font-semibold text-sm px-4 py-2 hidden sm:inline-flex">
               Get Instant Quote
@@ -180,6 +183,7 @@ function Header() {
                 )}
               </div>
             ))}
+            <MobileAdminLink onClose={() => setMobileOpen(false)} />
             <div className="pt-3 px-3">
               <Link href="/instant-quote" onClick={() => setMobileOpen(false)}>
                 <Button className="w-full bg-primary hover:bg-navy-light text-white font-semibold">
@@ -192,6 +196,46 @@ function Header() {
       )}
     </header>
   );
+}
+
+function AdminHeaderButton() {
+  const { user, loading } = useAuth();
+
+  if (loading) return null;
+
+  if (user && user.role === "admin") {
+    return (
+      <Link href="/admin">
+        <Button variant="outline" size="sm" className="hidden sm:inline-flex gap-1.5 border-primary text-primary hover:bg-primary hover:text-white">
+          <Settings className="w-4 h-4" />
+          Admin
+        </Button>
+      </Link>
+    );
+  }
+
+  return null;
+}
+
+function MobileAdminLink({ onClose }: { onClose: () => void }) {
+  const { user, loading } = useAuth();
+
+  if (loading) return null;
+
+  if (user && user.role === "admin") {
+    return (
+      <Link
+        href="/admin"
+        className="flex items-center gap-2 px-3 py-2.5 text-sm font-medium text-primary hover:text-primary/80"
+        onClick={onClose}
+      >
+        <Settings className="w-4 h-4" />
+        Admin Dashboard
+      </Link>
+    );
+  }
+
+  return null;
 }
 
 function Footer() {
