@@ -95,3 +95,10 @@
 - [x] Remove Good/Better/Best tiers from all services except window cleaning
 - [x] Rename window cleaning tiers: Expert Essential, Signature Sparkle, Platinum Perfection
 - [x] Add detailed feature lists for each window cleaning package tier
+- [x] Rebuild admin pricing editor with user-friendly labeled fields, descriptions, and organized sections
+- [x] Add per-service tabs (Global, House Washing, Window Cleaning, etc.) with clear field labels
+- [x] Add story/pitch multiplier editors with visual multiplier display
+- [x] Add size tier editors showing estimated price per tier
+- [x] Add sample quote preview per service
+- [x] Add unsaved changes indicator and Save All button
+- [x] Write vitest tests for admin pricing list/update procedures and access control

@@ -1,0 +1,54 @@
+{
+  "query": "SELECT serviceType, config FROM pricing_config ORDER BY id;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3z6G3qgSk61sZdF.979b9601421d --database oHXPLRsqF4QE4MgCnVhtdo --execute SELECT serviceType, config FROM pricing_config ORDER BY id;",
+  "rows": [
+    {
+      "serviceType": "house_washing",
+      "config": "{\"garageMultiplier\": 1, \"minDuration\": 60, \"minPrice\": 350, \"ratePerSqft\": 0.14, \"storyMultipliers\": {\"1\": 1, \"2\": 1.3, \"3\": 1.6}, \"targetRevenuePerHour\": 300}"
+    },
+    {
+      "serviceType": "window_cleaning",
+      "config": "{\"exteriorPerWindow\": 11, \"interiorPerWindow\": 10, \"minDuration\": 60, \"minPrice\": 250, \"screenPerWindow\": 4, \"targetRevenuePerHour\": 300}"
+    },
+    {
+      "serviceType": "driveway_cleaning",
+      "config": "{\"minDuration\": 30, \"minPrice\": 75, \"ratePerSqft\": 0.2, \"sizeTiers\": {\"2XL\": 2000, \"L\": 1200, \"M\": 1000, \"S\": 800, \"XL\": 1500}, \"targetRevenuePerHour\": 300}"
+    },
+    {
+      "serviceType": "roof_cleaning",
+      "config": "{\"minDuration\": 90, \"minPrice\": 575, \"pitchMultipliers\": {\"low\": 1.15, \"medium\": 1.45, \"steep\": 1.9}, \"ratePerSqft\": 0.3, \"targetRevenuePerHour\": 400}"
+    },
+    {
+      "serviceType": "gutter_cleaning",
+      "config": "{\"minDuration\": 45, \"minPrice\": 150, \"ratePerLinearFt\": 1.5, \"sizeTiers\": {\"2XL\": 300, \"L\": 200, \"M\": 150, \"S\": 100, \"XL\": 250}, \"storyMultipliers\": {\"1\": 1, \"2\": 1.3, \"3\": 1.6}, \"targetRevenuePerHour\": 300}"
+    },
+    {
+      "serviceType": "patio_cleaning",
+      "config": "{\"minDuration\": 10, \"minPrice\": 40, \"ratePerSqft\": 0.55, \"sizeTiers\": {\"2XL\": 256, \"L\": 144, \"M\": 100, \"S\": 64, \"XL\": 200}, \"targetRevenuePerHour\": 300}"
+    },
+    {
+      "serviceType": "walkway_cleaning",
+      "config": "{\"minDuration\": 15, \"minPrice\": 55, \"ratePerSqft\": 0.55, \"sizeTiers\": {\"2XL\": 240, \"L\": 144, \"M\": 96, \"S\": 48, \"XL\": 192}, \"targetRevenuePerHour\": 300}"
+    },
+    {
+      "serviceType": "deck_cleaning",
+      "config": "{\"minDuration\": 45, \"minPrice\": 150, \"ratePerSqft\": 0.45, \"sizeTiers\": {\"2XL\": 500, \"L\": 300, \"M\": 200, \"S\": 100, \"XL\": 400}, \"targetRevenuePerHour\": 300}"
+    },
+    {
+      "serviceType": "fence_cleaning",
+      "config": "{\"minDuration\": 30, \"minPrice\": 100, \"ratePerLinearFt\": 1.25, \"sizeTiers\": {\"2XL\": 250, \"L\": 150, \"M\": 100, \"S\": 50, \"XL\": 200}, \"targetRevenuePerHour\": 300}"
+    },
+    {
+      "serviceType": "detached_structure",
+      "config": "{\"minDuration\": 30, \"minPrice\": 75, \"ratePerSqft\": 0.18, \"sizeTiers\": {\"2XL\": 1000, \"L\": 700, \"M\": 550, \"S\": 400, \"XL\": 850}, \"targetRevenuePerHour\": 300}"
+    },
+    {
+      "serviceType": "global_settings",
+      "config": "{\"baseAddress\": \"177 Webb Ave, Cookeville, TN 38506\", \"baseLat\": 36.1628, \"baseLng\": -85.5016, \"bundleDiscounts\": {\"2\": 5, \"3\": 10, \"4\": 15, \"5\": 20}, \"freeRadius\": 15, \"jobMinimum\": 225, \"taxRate\": 0, \"travelFeePerMile\": 3, \"travelRadius\": 40}"
+    }
+  ],
+  "messages": [],
+  "stdout": "serviceType\tconfig\nhouse_washing\t{\"garageMultiplier\": 1, \"minDuration\": 60, \"minPrice\": 350, \"ratePerSqft\": 0.14, \"storyMultipliers\": {\"1\": 1, \"2\": 1.3, \"3\": 1.6}, \"targetRevenuePerHour\": 300}\nwindow_cleaning\t{\"exteriorPerWindow\": 11, \"interiorPerWindow\": 10, \"minDuration\": 60, \"minPrice\": 250, \"screenPerWindow\": 4, \"targetRevenuePerHour\": 300}\ndriveway_cleaning\t{\"minDuration\": 30, \"minPrice\": 75, \"ratePerSqft\": 0.2, \"sizeTiers\": {\"2XL\": 2000, \"L\": 1200, \"M\": 1000, \"S\": 800, \"XL\": 1500}, \"targetRevenuePerHour\": 300}\nroof_cleaning\t{\"minDuration\": 90, \"minPrice\": 575, \"pitchMultipliers\": {\"low\": 1.15, \"medium\": 1.45, \"steep\": 1.9}, \"ratePerSqft\": 0.3, \"targetRevenuePerHour\": 400}\ngutter_cleaning\t{\"minDuration\": 45, \"minPrice\": 150, \"ratePerLinearFt\": 1.5, \"sizeTiers\": {\"2XL\": 300, \"L\": 200, \"M\": 150, \"S\": 100, \"XL\": 250}, \"storyMultipliers\": {\"1\": 1, \"2\": 1.3, \"3\": 1.6}, \"targetRevenuePerHour\": 300}\npatio_cleaning\t{\"minDuration\": 10, \"minPrice\": 40, \"ratePerSqft\": 0.55, \"sizeTiers\": {\"2XL\": 256, \"L\": 144, \"M\": 100, \"S\": 64, \"XL\": 200}, \"targetRevenuePerHour\": 300}\nwalkway_cleaning\t{\"minDuration\": 15, \"minPrice\": 55, \"ratePerSqft\": 0.55, \"sizeTiers\": {\"2XL\": 240, \"L\": 144, \"M\": 96, \"S\": 48, \"XL\": 192}, \"targetRevenuePerHour\": 300}\ndeck_cleaning\t{\"minDuration\": 45, \"minPrice\": 150, \"ratePerSqft\": 0.45, \"sizeTiers\": {\"2XL\": 500, \"L\": 300, \"M\": 200, \"S\": 100, \"XL\": 400}, \"targetRevenuePerHour\": 300}\nfence_cleaning\t{\"minDuration\": 30, \"minPrice\": 100, \"ratePerLinearFt\": 1.25, \"sizeTiers\": {\"2XL\": 250, \"L\": 150, \"M\": 100, \"S\": 50, \"XL\": 200}, \"targetRevenuePerHour\": 300}\ndetached_structure\t{\"minDuration\": 30, \"minPrice\": 75, \"ratePerSqft\": 0.18, \"sizeTiers\": {\"2XL\": 1000, \"L\": 700, \"M\": 550, \"S\": 400, \"XL\": 850}, \"targetRevenuePerHour\": 300}\nglobal_settings\t{\"baseAddress\": \"177 Webb Ave, Cookeville, TN 38506\", \"baseLat\": 36.1628, \"baseLng\": -85.5016, \"bundleDiscounts\": {\"2\": 5, \"3\": 10, \"4\": 15, \"5\": 20}, \"freeRadius\": 15, \"jobMinimum\": 225, \"taxRate\": 0, \"travelFeePerMile\": 3, \"travelRadius\": 40}\n",
+  "stderr": "",
+  "execution_time_ms": 483
+}
