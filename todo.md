@@ -117,3 +117,5 @@
 - [x] Shorten Cookeville page title to under 60 characters
 - [x] Shorten Cookeville page meta description to under 160 characters
 - [x] Reduce keyword density on Cookeville page to 3-8 focused keywords
+- [x] Shorten House Washing Cookeville page meta description to under 160 characters
+- [x] Reduce keyword density on House Washing Cookeville page to 3-8 focused keywords

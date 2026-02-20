@@ -5,6 +5,7 @@ import { Link } from "wouter";
 import { BUSINESS, SERVICES, LOCATIONS, SEED_GALLERY } from "@shared/data";
 import { ServiceSchema } from "@/components/SchemaMarkup";
 import { Phone, ArrowRight, CheckCircle, Star, Shield, Clock } from "lucide-react";
+import { useEffect } from "react";
 
 interface ServicePageProps {
   serviceId: string;
@@ -190,6 +191,18 @@ export default function ServicePage({ serviceId, locationId }: ServicePageProps)
   const relatedImages = SEED_GALLERY.filter(g => g.service === serviceId).slice(0, 4);
   const locationName = `${location.name}, ${location.state}`;
   const pageTitle = `${service.name} in ${locationName}`;
+
+  useEffect(() => {
+    document.title = `${service.name} ${location.name}, TN | Exterior Experts`;
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute("content", `Professional ${service.name.toLowerCase()} in ${locationName}. Licensed, insured, satisfaction guaranteed. Free quotes.`);
+    }
+    const metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (metaKeywords) {
+      metaKeywords.setAttribute("content", `${service.name.toLowerCase()} ${location.name} TN, ${service.shortName.toLowerCase()} ${location.name}, exterior cleaning ${location.name} TN`);
+    }
+  }, [service, location]);
 
   return (
     <SiteLayout>
