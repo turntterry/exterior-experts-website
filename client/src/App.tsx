@@ -10,6 +10,7 @@ import { lazy, Suspense } from "react";
 // Lazy load pages for better performance
 const ServicePage = lazy(() => import("./pages/ServicePage"));
 const LocationPage = lazy(() => import("./pages/LocationPage"));
+const CookevillePage = lazy(() => import("./pages/CookevillePage"));
 const ServiceAreas = lazy(() => import("./pages/ServiceAreas"));
 const QuoteTool = lazy(() => import("./pages/QuoteTool"));
 const Gallery = lazy(() => import("./pages/Gallery"));
@@ -49,7 +50,7 @@ function Router() {
         <Route path="/house-washing-livingston-tn" component={() => <ServicePage serviceId="house_washing" locationId="livingston" />} />
         {/* Location pages */}
         <Route path="/service-areas" component={ServiceAreas} />
-        <Route path="/service-areas/cookeville-tn" component={() => <LocationPage locationId="cookeville" />} />
+        <Route path="/service-areas/cookeville-tn" component={CookevillePage} />
         <Route path="/service-areas/baxter-tn" component={() => <LocationPage locationId="baxter" />} />
         <Route path="/service-areas/algood-tn" component={() => <LocationPage locationId="algood" />} />
         <Route path="/service-areas/sparta-tn" component={() => <LocationPage locationId="sparta" />} />

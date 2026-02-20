@@ -113,3 +113,4 @@
 - [x] Add "it's okay to estimate" reassurance note on each service card in Details step
 - [x] Add measurement disclaimer after service selection (prices may adjust after on-site measurement)
 - [x] Increase concrete/driveway slider max to 10,000 sq ft
+- [x] Rewrite Cookeville TN service area page with SEO-rich content, internal links to service pages, FAQ schema, and CTA
