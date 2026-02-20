@@ -120,9 +120,8 @@ function Header() {
           ))}
         </nav>
 
-        {/* CTA + Admin + Mobile Toggle */}
+        {/* CTA + Mobile Toggle */}
         <div className="flex items-center gap-3">
-          <AdminHeaderButton />
           <Link href="/instant-quote">
             <Button className="bg-primary hover:bg-navy-light text-white font-semibold text-sm px-4 py-2 hidden sm:inline-flex">
               Get Instant Quote
@@ -183,7 +182,6 @@ function Header() {
                 )}
               </div>
             ))}
-            <MobileAdminLink onClose={() => setMobileOpen(false)} />
             <div className="pt-3 px-3">
               <Link href="/instant-quote" onClick={() => setMobileOpen(false)}>
                 <Button className="w-full bg-primary hover:bg-navy-light text-white font-semibold">
@@ -198,44 +196,14 @@ function Header() {
   );
 }
 
-function AdminHeaderButton() {
+function DiscreetManageLink() {
   const { user, loading } = useAuth();
-
-  if (loading) return null;
-
-  if (user && user.role === "admin") {
-    return (
-      <Link href="/admin">
-        <Button variant="outline" size="sm" className="hidden sm:inline-flex gap-1.5 border-primary text-primary hover:bg-primary hover:text-white">
-          <Settings className="w-4 h-4" />
-          Admin
-        </Button>
-      </Link>
-    );
-  }
-
-  return null;
-}
-
-function MobileAdminLink({ onClose }: { onClose: () => void }) {
-  const { user, loading } = useAuth();
-
-  if (loading) return null;
-
-  if (user && user.role === "admin") {
-    return (
-      <Link
-        href="/admin"
-        className="flex items-center gap-2 px-3 py-2.5 text-sm font-medium text-primary hover:text-primary/80"
-        onClick={onClose}
-      >
-        <Settings className="w-4 h-4" />
-        Admin Dashboard
-      </Link>
-    );
-  }
-
-  return null;
+  if (loading || !user || user.role !== "admin") return null;
+  return (
+    <Link href="/admin" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">
+      Manage Site
+    </Link>
+  );
 }
 
 function Footer() {
@@ -331,6 +299,7 @@ function Footer() {
             <Link href="/contact" className="text-xs text-gray-400 hover:text-white transition-colors">
               Contact
             </Link>
+            <DiscreetManageLink />
           </div>
         </div>
       </div>
