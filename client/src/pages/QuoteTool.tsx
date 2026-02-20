@@ -496,7 +496,6 @@ function ServiceDetailForm({ serviceId, inputs, updateInput, config, price }: {
                 </div>
               </RadioGroup>
             </div>
-            <PackageTierSelector value={inputs.packageTier} onChange={v => updateInput("packageTier", v)} />
           </div>
         )}
 
@@ -507,21 +506,7 @@ function ServiceDetailForm({ serviceId, inputs, updateInput, config, price }: {
               <Label>Number of Windows</Label>
               <Input type="number" value={inputs.windowCount || ""} onChange={e => updateInput("windowCount", Number(e.target.value) || 0)} placeholder="e.g. 15" />
             </div>
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <Checkbox checked={inputs.includeExterior !== false} onCheckedChange={v => updateInput("includeExterior", v)} id="ext" />
-                <Label htmlFor="ext">Exterior Windows (${config.exteriorPerWindow || 11}/window)</Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Checkbox checked={inputs.includeInterior || false} onCheckedChange={v => updateInput("includeInterior", v)} id="int" />
-                <Label htmlFor="int">Interior Windows (${config.interiorPerWindow || 10}/window)</Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Checkbox checked={inputs.includeScreens || false} onCheckedChange={v => updateInput("includeScreens", v)} id="scr" />
-                <Label htmlFor="scr">Screen Cleaning (${config.screenPerWindow || 4}/screen)</Label>
-              </div>
-            </div>
-            <PackageTierSelector value={inputs.packageTier} onChange={v => updateInput("packageTier", v)} />
+            <WindowPackageSelector value={inputs.packageTier} onChange={v => updateInput("packageTier", v)} />
           </div>
         )}
 
@@ -556,8 +541,8 @@ function ServiceDetailForm({ serviceId, inputs, updateInput, config, price }: {
               <Select value={inputs.sizeSelection || "M"} onValueChange={v => updateInput("sizeSelection", v)}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  {Object.entries(config.sizeTiers || {}).map(([k, v]) => (
-                    <SelectItem key={k} value={k}>{SIZE_LABELS[k]} ({v} linear ft)</SelectItem>
+                  {Object.entries(config.sizeTiers || {}).map(([k]) => (
+                    <SelectItem key={k} value={k}>{SIZE_LABELS[k]}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -586,8 +571,8 @@ function ServiceDetailForm({ serviceId, inputs, updateInput, config, price }: {
               <Select value={inputs.sizeSelection || "M"} onValueChange={v => updateInput("sizeSelection", v)}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  {Object.entries(config.sizeTiers || {}).map(([k, v]) => (
-                    <SelectItem key={k} value={k}>{SIZE_LABELS[k]} ({v} sq ft)</SelectItem>
+                  {Object.entries(config.sizeTiers || {}).map(([k]) => (
+                    <SelectItem key={k} value={k}>{SIZE_LABELS[k]}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -595,40 +580,66 @@ function ServiceDetailForm({ serviceId, inputs, updateInput, config, price }: {
           </div>
         )}
 
-        {/* Price breakdown */}
-        {price && price.breakdown.length > 0 && (
-          <div className="mt-4 pt-4 border-t">
-            <p className="text-xs font-semibold text-muted-foreground mb-2">Price Breakdown:</p>
-            {price.breakdown.map((line, i) => (
-              <p key={i} className="text-xs text-muted-foreground">{line}</p>
-            ))}
-          </div>
-        )}
+
       </CardContent>
     </Card>
   );
 }
 
-function PackageTierSelector({ value, onChange }: { value?: string; onChange: (v: string) => void }) {
+function WindowPackageSelector({ value, onChange }: { value?: string; onChange: (v: string) => void }) {
   const tiers = [
-    { id: "good", name: "Good", desc: "Standard service", mult: "1×" },
-    { id: "better", name: "Better", desc: "Enhanced cleaning + detail", mult: "1.15×" },
-    { id: "best", name: "Best", desc: "Premium treatment + warranty", mult: "1.3×" },
+    {
+      id: "good",
+      name: "Expert Essential",
+      included: ["Exterior Glass Cleaning", "Screen Removal & Replacement"],
+      notIncluded: ["Interior Glass", "Frames & Sills", "Deep Track & Screen Scrub"],
+    },
+    {
+      id: "better",
+      name: "Signature Sparkle",
+      badge: "Most Popular",
+      included: ["Exterior Glass Cleaning", "Interior Glass Cleaning", "Frames Wiped Down", "Interior Ledges Wiped"],
+      notIncluded: ["Sills", "Deep Track Cleaning or Screen Scrub"],
+    },
+    {
+      id: "best",
+      name: "Platinum Perfection",
+      included: ["Exterior & Interior Glass", "Frames, Sills & Ledges", "Deep Screen Washing (Soap & Scrub)", "Deep Track Detailing (Clean & Rinse)"],
+      notIncluded: [],
+    },
   ];
   return (
     <div>
-      <Label className="mb-2 block">Service Package</Label>
-      <div className="grid grid-cols-3 gap-2">
+      <Label className="mb-2 block">Window Cleaning Package</Label>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {tiers.map(t => (
           <button
             key={t.id}
             onClick={() => onChange(t.id)}
-            className={`p-3 rounded-lg border-2 text-center transition-all ${
-              (value || "good") === t.id ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"
+            className={`p-4 rounded-xl border-2 text-left transition-all relative ${
+              (value || "good") === t.id ? "border-primary bg-primary/5 shadow-md" : "border-border hover:border-primary/30"
             }`}
           >
-            <p className="font-bold text-sm">{t.name}</p>
-            <p className="text-xs text-muted-foreground">{t.desc}</p>
+            {t.badge && (
+              <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-sky text-white text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap">
+                {t.badge}
+              </span>
+            )}
+            <p className="font-bold text-sm mb-2">{t.name}</p>
+            <div className="space-y-1">
+              {t.included.map(item => (
+                <p key={item} className="text-xs flex items-start gap-1.5">
+                  <span className="text-green-600 font-bold shrink-0">✓</span>
+                  <span>{item}</span>
+                </p>
+              ))}
+              {t.notIncluded.map(item => (
+                <p key={item} className="text-xs flex items-start gap-1.5 text-muted-foreground">
+                  <span className="text-red-400 font-bold shrink-0">✗</span>
+                  <span>{item}</span>
+                </p>
+              ))}
+            </div>
           </button>
         ))}
       </div>
@@ -649,9 +660,9 @@ function StepReview({ pricingResults, quoteSummary, serviceInputs, address, name
             <div key={r.serviceType} className="flex justify-between items-center py-3 border-b">
               <div>
                 <p className="font-semibold">{svc?.name || r.serviceType}</p>
-                {serviceInputs[r.serviceType]?.packageTier && serviceInputs[r.serviceType].packageTier !== "good" && (
+                {r.serviceType === "window_cleaning" && serviceInputs[r.serviceType]?.packageTier && (
                   <Badge variant="secondary" className="text-xs mt-1">
-                    {serviceInputs[r.serviceType].packageTier === "best" ? "Best" : "Better"} Package
+                    {serviceInputs[r.serviceType].packageTier === "best" ? "Platinum Perfection" : serviceInputs[r.serviceType].packageTier === "better" ? "Signature Sparkle" : "Expert Essential"}
                   </Badge>
                 )}
               </div>

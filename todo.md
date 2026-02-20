@@ -91,3 +91,7 @@
 - [x] Fix homepage SEO: add meta keywords, optimize meta title/description
 - [x] Generate sitemap.xml with all current pages
 - [x] Create robots.txt pointing to sitemap
+- [x] Remove per-item price breakdowns from quote tool (customer sees total only)
+- [x] Remove Good/Better/Best tiers from all services except window cleaning
+- [x] Rename window cleaning tiers: Expert Essential, Signature Sparkle, Platinum Perfection
+- [x] Add detailed feature lists for each window cleaning package tier
