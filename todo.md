@@ -87,3 +87,4 @@
 - [ ] Create blog foundation with category structure
 - [ ] Write 2 full starter blog posts (1200-1800 words each)
 - [ ] Final QA: no keyword stuffing, no fake claims, all pages have schema + meta + internal links
+- [x] Remove per-mile travel fee breakdown from customer-facing quote tool

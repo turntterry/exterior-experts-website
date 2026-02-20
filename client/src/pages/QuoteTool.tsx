@@ -366,7 +366,7 @@ function StepAddress({ address, setAddress, city, setCity, stateVal, setStateVal
         <div className="bg-secondary rounded-lg p-4 flex items-start gap-3">
           <MapPin className="w-5 h-5 text-primary shrink-0 mt-0.5" />
           <div className="text-sm text-muted-foreground">
-            <p>We serve a <strong>{globalConfig.travelRadius}-mile radius</strong> from {BUSINESS.city}. Travel within {globalConfig.freeRadius} miles is free; beyond that, a small travel fee of ${globalConfig.travelFeePerMile}/mile applies.</p>
+            <p>We serve Cookeville, Baxter, Algood, Sparta, Livingston, and the surrounding Upper Cumberland area.</p>
           </div>
         </div>
       </div>
@@ -672,12 +672,7 @@ function StepReview({ pricingResults, quoteSummary, serviceInputs, address, name
             <span>-${quoteSummary.bundleDiscount.toFixed(2)}</span>
           </div>
         )}
-        {quoteSummary.travelFee > 0 && (
-          <div className="flex justify-between text-sm">
-            <span>Travel Fee</span>
-            <span>${quoteSummary.travelFee.toFixed(2)}</span>
-          </div>
-        )}
+
         {quoteSummary.jobMinimumApplied && (
           <div className="flex justify-between text-sm text-amber-600">
             <span>Job Minimum Applied</span>
