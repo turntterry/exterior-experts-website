@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "wouter";
 import { BUSINESS, SERVICES, LOCATIONS } from "@shared/data";
+import { LocationSchema } from "@/components/SchemaMarkup";
 import { Phone, ArrowRight, MapPin, CheckCircle } from "lucide-react";
 
 interface LocationPageProps {
@@ -17,6 +18,7 @@ export default function LocationPage({ locationId }: LocationPageProps) {
 
   return (
     <SiteLayout>
+      <LocationSchema location={location} />
       {/* Hero */}
       <section className="bg-navy py-16 md:py-20 relative">
         <div className="absolute inset-0 bg-gradient-to-r from-navy-dark to-navy opacity-90" />

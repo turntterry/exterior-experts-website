@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "wouter";
 import { BUSINESS, SERVICES, LOCATIONS, SEED_GALLERY } from "@shared/data";
+import { ServiceSchema } from "@/components/SchemaMarkup";
 import { Phone, ArrowRight, CheckCircle, Star, Shield, Clock } from "lucide-react";
 
 interface ServicePageProps {
@@ -172,6 +173,7 @@ export default function ServicePage({ serviceId, locationId }: ServicePageProps)
 
   return (
     <SiteLayout>
+      <ServiceSchema service={service} location={location} faq={content.faq} />
       {/* Hero */}
       <section className="bg-navy py-16 md:py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-navy-dark to-navy opacity-90" />

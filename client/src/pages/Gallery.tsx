@@ -2,6 +2,7 @@ import SiteLayout from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { SEED_GALLERY, SERVICES } from "@shared/data";
+import { BreadcrumbSchema } from "@/components/SchemaMarkup";
 import { trpc } from "@/lib/trpc";
 import { ArrowRight, X } from "lucide-react";
 import { useState, useMemo } from "react";
@@ -25,8 +26,14 @@ export default function Gallery() {
 
   const filtered = filter === "all" ? allImages : allImages.filter(i => i.service === filter);
 
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
+
   return (
     <SiteLayout>
+      <BreadcrumbSchema items={[
+        { name: "Home", url: origin },
+        { name: "Gallery", url: `${origin}/gallery` },
+      ]} />
       <section className="bg-navy py-16 md:py-20 relative">
         <div className="absolute inset-0 bg-gradient-to-r from-navy-dark to-navy opacity-90" />
         <div className="container relative">

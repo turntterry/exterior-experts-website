@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "wouter";
 import { BUSINESS, LOCATIONS } from "@shared/data";
+import { BreadcrumbSchema } from "@/components/SchemaMarkup";
 import { MapPin, ArrowRight, Phone } from "lucide-react";
 import { MapView } from "@/components/Map";
 import { useRef } from "react";
@@ -10,8 +11,14 @@ import { useRef } from "react";
 export default function ServiceAreas() {
   const mapRef = useRef<google.maps.Map | null>(null);
 
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
+
   return (
     <SiteLayout>
+      <BreadcrumbSchema items={[
+        { name: "Home", url: origin },
+        { name: "Service Areas", url: `${origin}/service-areas` },
+      ]} />
       <section className="bg-navy py-16 md:py-20 relative">
         <div className="absolute inset-0 bg-gradient-to-r from-navy-dark to-navy opacity-90" />
         <div className="container relative">

@@ -18,8 +18,8 @@
 - [x] Service page: House Washing Livingston
 - [x] Service Areas hub page
 - [x] City pages: Cookeville, Baxter, Algood, Sparta, Livingston
-- [ ] SEO: meta titles, descriptions, H1s, schema markup per skill spec
-- [ ] Internal linking per skill spec rules
+- [x] SEO: meta titles, descriptions, H1s, schema markup per skill spec
+- [x] Internal linking per skill spec rules
 - [x] Instant Quote Tool: multi-step wizard UI
 - [x] Quote Step 1: Address input with Google Maps autocomplete
 - [x] Quote Step 2: Contact capture (name, phone, email)
@@ -45,12 +45,12 @@
 - [x] Admin: View all quote submissions with filters and search
 - [x] Admin: Lead management (status tracking, notes)
 - [x] Admin: Pricing formula editor (adjust rates, minimums, multipliers)
-- [ ] Admin: Conversion rate tracking and analytics
+- [x] Admin: Conversion rate tracking and analytics
 - [x] Admin: Before/after photo gallery management (upload/delete)
 - [x] Contact form with service selection and property details
 - [x] Before/after photo gallery page (public)
 - [x] Notification: Auto-notify owner on new quote submission
-- [ ] Google Maps: service area visualization on service areas page
+- [x] Google Maps: service area visualization on service areas page
 - [x] Google Maps: distance calculation in quote tool
 - [x] S3 storage: customer photo uploads during quote
 - [x] S3 storage: admin gallery photo uploads
@@ -60,3 +60,17 @@
 - [x] Replace stock gallery photos with real before/after work photos
 - [x] Update Google reviews section with actual customer reviews from screenshots
 - [x] Upload all real photos to S3
+- [ ] Add LocalBusiness JSON-LD schema to homepage
+- [ ] Add Service schema for each service page
+- [ ] Add BreadcrumbList schema for navigation
+- [ ] Add AggregateRating schema with Google reviews data
+- [ ] Add AreaServed schema for location pages
+- [ ] Add FAQPage schema where applicable
+- [ ] Create reusable SchemaMarkup component
+- [x] Add LocalBusiness JSON-LD schema to homepage
+- [x] Add Service schema for each service page
+- [x] Add BreadcrumbList schema for all pages
+- [x] Add AggregateRating schema with Google reviews data
+- [x] Add AreaServed schema for location pages
+- [x] Add FAQPage schema on service pages
+- [x] Create reusable SchemaMarkup component

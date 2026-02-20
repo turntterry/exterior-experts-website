@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { BUSINESS, SERVICES } from "@shared/data";
+import { BreadcrumbSchema } from "@/components/SchemaMarkup";
 import { trpc } from "@/lib/trpc";
 import { Phone, Mail, MapPin, Clock, CheckCircle } from "lucide-react";
 import { useState } from "react";
@@ -33,8 +34,14 @@ export default function Contact() {
     submitMutation.mutate(form);
   };
 
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
+
   return (
     <SiteLayout>
+      <BreadcrumbSchema items={[
+        { name: "Home", url: origin },
+        { name: "Contact", url: `${origin}/contact` },
+      ]} />
       <section className="bg-navy py-16 md:py-20 relative">
         <div className="absolute inset-0 bg-gradient-to-r from-navy-dark to-navy opacity-90" />
         <div className="container relative">
