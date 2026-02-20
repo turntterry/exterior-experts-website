@@ -110,3 +110,6 @@
 - [x] Make quote tool inputs look more premium with styled sliders and clean controls
 - [x] Update pricing engine to support slider values, fence sides, and window package multipliers
 - [x] Update admin pricing editor for new fields (fence sides multiplier, window package multipliers)
+- [x] Add "it's okay to estimate" reassurance note on each service card in Details step
+- [x] Add measurement disclaimer after service selection (prices may adjust after on-site measurement)
+- [x] Increase concrete/driveway slider max to 10,000 sq ft

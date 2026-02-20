@@ -19,7 +19,7 @@ import {
 import {
   ArrowRight, ArrowLeft, CheckCircle, Phone, MapPin, Upload, Calendar, Clock,
   Home as HomeIcon, Droplets, SquareStack, Filter, LayoutGrid, Triangle, Fence, X, Loader2, Shield, Star,
-  Ruler, FlipHorizontal,
+  Ruler, FlipHorizontal, Info,
 } from "lucide-react";
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { toast } from "sonner";
@@ -46,7 +46,7 @@ const SLIDER_DEFAULTS: Record<string, { min: number; max: number; step: number; 
   gutter_cleaning: { min: 50, max: 400, step: 10, default: 150, unit: "linear ft" },
   fence_cleaning: { min: 20, max: 500, step: 10, default: 100, unit: "linear ft" },
   deck_cleaning: { min: 50, max: 1200, step: 25, default: 300, unit: "sq ft" },
-  driveway_cleaning: { min: 100, max: 2000, step: 50, default: 500, unit: "sq ft" },
+  driveway_cleaning: { min: 100, max: 10000, step: 50, default: 500, unit: "sq ft" },
   patio_cleaning: { min: 50, max: 1000, step: 25, default: 250, unit: "sq ft" },
   walkway_cleaning: { min: 20, max: 500, step: 10, default: 100, unit: "sq ft" },
 };
@@ -420,7 +420,11 @@ function StepDetails({ selectedServices, serviceInputs, updateServiceInput, pric
   return (
     <div>
       <h2 className="font-heading font-bold text-xl mb-1">Tell us about your property</h2>
-      <p className="text-sm text-muted-foreground mb-6">Configure each service for accurate pricing.</p>
+      <p className="text-sm text-muted-foreground mb-4">Configure each service for accurate pricing.</p>
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-6 flex items-start gap-2">
+        <Info className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+        <p className="text-sm text-blue-800">Don't worry about being exact — a rough estimate is perfectly fine. We'll take final measurements on-site before any work begins, and your price will be adjusted if needed.</p>
+      </div>
       <div className="space-y-6">
         {services.map((svcId: string) => (
           <ServiceDetailForm
@@ -880,7 +884,7 @@ function StepReview({ pricingResults, quoteSummary, serviceInputs, address, name
       <div className="mt-4 text-xs text-muted-foreground bg-secondary/50 rounded-lg p-3">
         <p><strong>Property:</strong> {address}</p>
         <p><strong>Customer:</strong> {name}</p>
-        <p className="mt-2">This is an estimate based on the information provided. Final pricing may vary based on on-site conditions.</p>
+        <p className="mt-2">This is an estimate based on the measurements you provided. We'll verify all measurements on-site before starting any work, and your final price may be adjusted if there's a significant difference.</p>
       </div>
     </div>
   );
