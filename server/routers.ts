@@ -13,6 +13,7 @@ import {
 import { storagePut } from "./storage";
 import { notifyOwner } from "./_core/notification";
 import { nanoid } from "nanoid";
+import { sendQuoteNotificationEmail, sendContactNotificationEmail } from "./email";
 
 export const appRouter = router({
   system: systemRouter,
@@ -103,7 +104,7 @@ export const appRouter = router({
           })));
         }
 
-        // Notify owner
+        // Notify owner (Manus in-app)
         const serviceList = input.items.map(i => i.serviceType.replace(/_/g, ' ')).join(', ');
         try {
           await notifyOwner({
@@ -112,6 +113,29 @@ export const appRouter = router({
           });
         } catch (e) {
           console.warn("Failed to notify owner:", e);
+        }
+
+        // Notify owner (email)
+        try {
+          await sendQuoteNotificationEmail({
+            customerName: input.customerName,
+            customerEmail: input.customerEmail,
+            customerPhone: input.customerPhone,
+            address: `${input.address}`,
+            services: input.items.map(i => ({
+              name: i.serviceType.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+              price: i.finalPrice,
+            })),
+            subtotal: input.subtotal,
+            bundleDiscount: input.bundleDiscount || 0,
+            travelFee: input.travelFee || 0,
+            totalPrice: input.totalPrice,
+            preferredDate: input.preferredDate,
+            preferredTime: input.preferredTime,
+            quoteId,
+          });
+        } catch (e) {
+          console.warn("Failed to send quote email:", e);
         }
 
         return { quoteId, totalPrice: input.totalPrice };
@@ -151,6 +175,7 @@ export const appRouter = router({
       }))
       .mutation(async ({ input }) => {
         const id = await createContactSubmission(input);
+        // Manus in-app notification
         try {
           await notifyOwner({
             title: `New Contact: ${input.name}`,
@@ -158,6 +183,19 @@ export const appRouter = router({
           });
         } catch (e) {
           console.warn("Failed to notify owner:", e);
+        }
+        // Email notification
+        try {
+          await sendContactNotificationEmail({
+            name: input.name,
+            email: input.email,
+            phone: input.phone || undefined,
+            service: input.service || undefined,
+            message: input.message || undefined,
+            contactId: id,
+          });
+        } catch (e) {
+          console.warn("Failed to send contact email:", e);
         }
         return { id };
       }),

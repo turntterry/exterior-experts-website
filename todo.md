@@ -122,3 +122,6 @@
 - [x] Trim homepage meta keywords in index.html to 5-6 focused terms
 - [x] Shorten homepage meta description in index.html to under 160 characters
 - [x] Add dynamic title/description/keywords to LocationPage for all city pages (Algood, Baxter, Sparta, Livingston)
+- [x] Investigate and fix missing email/notifications after customer submits a quote (Manus notifications working, adding email)
+- [x] Add email notifications to randall@exteriorexperts.co for new quote submissions
+- [x] Add email notifications to randall@exteriorexperts.co for new contact form submissions

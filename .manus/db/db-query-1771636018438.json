@@ -1,0 +1,37 @@
+{
+  "query": "SELECT * FROM quotes ORDER BY createdAt DESC LIMIT 1;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3z6G3qgSk61sZdF.979b9601421d --database oHXPLRsqF4QE4MgCnVhtdo --execute SELECT * FROM quotes ORDER BY createdAt DESC LIMIT 1;",
+  "rows": [
+    {
+      "id": "1",
+      "customerName": "Randall",
+      "customerEmail": "randall@exteriorexperts.co",
+      "customerPhone": "9312842291",
+      "address": "177 Webb Ave, Cookeville, TN 38506-5149",
+      "city": "Cookeville",
+      "state": "TN",
+      "zip": "38506-5149",
+      "lat": "NULL",
+      "lng": "NULL",
+      "distanceMiles": "NULL",
+      "sqft": "NULL",
+      "stories": "NULL",
+      "subtotal": "890.00",
+      "bundleDiscount": "89.00",
+      "travelFee": "0.00",
+      "totalPrice": "801.00",
+      "preferredDate": "2026-02-23",
+      "preferredTime": "morning",
+      "status": "new",
+      "notes": "NULL",
+      "referralSource": "facebook",
+      "customerPhotos": "[]",
+      "createdAt": "2026-02-20 06:28:20",
+      "updatedAt": "2026-02-20 06:28:20"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tcustomerName\tcustomerEmail\tcustomerPhone\taddress\tcity\tstate\tzip\tlat\tlng\tdistanceMiles\tsqft\tstories\tsubtotal\tbundleDiscount\ttravelFee\ttotalPrice\tpreferredDate\tpreferredTime\tstatus\tnotes\treferralSource\tcustomerPhotos\tcreatedAt\tupdatedAt\n1\tRandall\trandall@exteriorexperts.co\t9312842291\t177 Webb Ave, Cookeville, TN 38506-5149\tCookeville\tTN\t38506-5149\tNULL\tNULL\tNULL\tNULL\tNULL\t890.00\t89.00\t0.00\t801.00\t2026-02-23\tmorning\tnew\tNULL\tfacebook\t[]\t2026-02-20 06:28:20\t2026-02-20 06:28:20\n",
+  "stderr": "",
+  "execution_time_ms": 358
+}

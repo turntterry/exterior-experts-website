@@ -1,0 +1,210 @@
+{
+  "query": "DESCRIBE quotes;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3z6G3qgSk61sZdF.979b9601421d --database oHXPLRsqF4QE4MgCnVhtdo --execute DESCRIBE quotes;",
+  "rows": [
+    {
+      "Field": "id",
+      "Type": "int",
+      "Null": "NO",
+      "Key": "PRI",
+      "Default": "NULL",
+      "Extra": "auto_increment"
+    },
+    {
+      "Field": "customerName",
+      "Type": "varchar(255)",
+      "Null": "NO",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "customerEmail",
+      "Type": "varchar(320)",
+      "Null": "NO",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "customerPhone",
+      "Type": "varchar(20)",
+      "Null": "NO",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "address",
+      "Type": "text",
+      "Null": "NO",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "city",
+      "Type": "varchar(100)",
+      "Null": "YES",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "state",
+      "Type": "varchar(2)",
+      "Null": "YES",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "zip",
+      "Type": "varchar(10)",
+      "Null": "YES",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "lat",
+      "Type": "decimal(10,7)",
+      "Null": "YES",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "lng",
+      "Type": "decimal(10,7)",
+      "Null": "YES",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "distanceMiles",
+      "Type": "decimal(6,2)",
+      "Null": "YES",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "sqft",
+      "Type": "int",
+      "Null": "YES",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "stories",
+      "Type": "int",
+      "Null": "YES",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "subtotal",
+      "Type": "decimal(10,2)",
+      "Null": "NO",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "bundleDiscount",
+      "Type": "decimal(10,2)",
+      "Null": "YES",
+      "Key": "",
+      "Default": "0",
+      "Extra": ""
+    },
+    {
+      "Field": "travelFee",
+      "Type": "decimal(10,2)",
+      "Null": "YES",
+      "Key": "",
+      "Default": "0",
+      "Extra": ""
+    },
+    {
+      "Field": "totalPrice",
+      "Type": "decimal(10,2)",
+      "Null": "NO",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "preferredDate",
+      "Type": "varchar(20)",
+      "Null": "YES",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "preferredTime",
+      "Type": "varchar(20)",
+      "Null": "YES",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "status",
+      "Type": "enum('new','contacted','scheduled','completed','cancelled')",
+      "Null": "NO",
+      "Key": "",
+      "Default": "new",
+      "Extra": ""
+    },
+    {
+      "Field": "notes",
+      "Type": "text",
+      "Null": "YES",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "referralSource",
+      "Type": "varchar(100)",
+      "Null": "YES",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "customerPhotos",
+      "Type": "json",
+      "Null": "YES",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "createdAt",
+      "Type": "timestamp",
+      "Null": "NO",
+      "Key": "",
+      "Default": "CURRENT_TIMESTAMP",
+      "Extra": ""
+    },
+    {
+      "Field": "updatedAt",
+      "Type": "timestamp",
+      "Null": "NO",
+      "Key": "",
+      "Default": "CURRENT_TIMESTAMP",
+      "Extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP"
+    }
+  ],
+  "messages": [],
+  "stdout": "Field\tType\tNull\tKey\tDefault\tExtra\nid\tint\tNO\tPRI\tNULL\tauto_increment\ncustomerName\tvarchar(255)\tNO\t\tNULL\t\ncustomerEmail\tvarchar(320)\tNO\t\tNULL\t\ncustomerPhone\tvarchar(20)\tNO\t\tNULL\t\naddress\ttext\tNO\t\tNULL\t\ncity\tvarchar(100)\tYES\t\tNULL\t\nstate\tvarchar(2)\tYES\t\tNULL\t\nzip\tvarchar(10)\tYES\t\tNULL\t\nlat\tdecimal(10,7)\tYES\t\tNULL\t\nlng\tdecimal(10,7)\tYES\t\tNULL\t\ndistanceMiles\tdecimal(6,2)\tYES\t\tNULL\t\nsqft\tint\tYES\t\tNULL\t\nstories\tint\tYES\t\tNULL\t\nsubtotal\tdecimal(10,2)\tNO\t\tNULL\t\nbundleDiscount\tdecimal(10,2)\tYES\t\t0\t\ntravelFee\tdecimal(10,2)\tYES\t\t0\t\ntotalPrice\tdecimal(10,2)\tNO\t\tNULL\t\npreferredDate\tvarchar(20)\tYES\t\tNULL\t\npreferredTime\tvarchar(20)\tYES\t\tNULL\t\nstatus\tenum('new','contacted','scheduled','completed','cancelled')\tNO\t\tnew\t\nnotes\ttext\tYES\t\tNULL\t\nreferralSource\tvarchar(100)\tYES\t\tNULL\t\ncustomerPhotos\tjson\tYES\t\tNULL\t\ncreatedAt\ttimestamp\tNO\t\tCURRENT_TIMESTAMP\t\nupdatedAt\ttimestamp\tNO\t\tCURRENT_TIMESTAMP\tDEFAULT_GENERATED on update CURRENT_TIMESTAMP\n",
+  "stderr": "",
+  "execution_time_ms": 368
+}
