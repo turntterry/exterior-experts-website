@@ -1,4 +1,4 @@
-import { eq, desc, sql, and } from "drizzle-orm";
+import { eq, desc, sql, and, lte } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
   InsertUser, users,
@@ -194,4 +194,17 @@ export async function updateContactStatus(id: number, status: string) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   await db.update(contactSubmissions).set({ status: status as any }).where(eq(contactSubmissions.id, id));
+}
+
+// ─── Follow-Up Reminders ────────────────────────────────────────────
+export async function getUnfollowedQuotes(olderThanHours: number) {
+  const db = await getDb();
+  if (!db) return [];
+  const cutoff = new Date(Date.now() - olderThanHours * 60 * 60 * 1000);
+  return db.select().from(quotes)
+    .where(and(
+      eq(quotes.status, "new"),
+      lte(quotes.createdAt, cutoff)
+    ))
+    .orderBy(quotes.createdAt);
 }

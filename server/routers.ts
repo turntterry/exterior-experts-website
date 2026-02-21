@@ -9,11 +9,12 @@ import {
   getAllPricingConfigs, getPricingConfig, updatePricingConfig,
   getGalleryImages, createGalleryImage, deleteGalleryImage,
   createContactSubmission, getContactSubmissions, updateContactStatus,
+  getUnfollowedQuotes,
 } from "./db";
 import { storagePut } from "./storage";
 import { notifyOwner } from "./_core/notification";
 import { nanoid } from "nanoid";
-import { sendQuoteNotificationEmail, sendContactNotificationEmail } from "./email";
+import { sendQuoteNotificationEmail, sendContactNotificationEmail, sendCustomerConfirmationEmail, sendFollowUpReminderEmail } from "./email";
 
 export const appRouter = router({
   system: systemRouter,
@@ -136,6 +137,28 @@ export const appRouter = router({
           });
         } catch (e) {
           console.warn("Failed to send quote email:", e);
+        }
+
+        // Send confirmation email to customer
+        try {
+          await sendCustomerConfirmationEmail({
+            customerName: input.customerName,
+            customerEmail: input.customerEmail,
+            address: input.address,
+            services: input.items.map(i => ({
+              name: i.serviceType.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+              price: i.finalPrice,
+            })),
+            subtotal: input.subtotal,
+            bundleDiscount: input.bundleDiscount || 0,
+            travelFee: input.travelFee || 0,
+            totalPrice: input.totalPrice,
+            preferredDate: input.preferredDate,
+            preferredTime: input.preferredTime,
+            quoteId,
+          });
+        } catch (e) {
+          console.warn("Failed to send customer confirmation email:", e);
         }
 
         return { quoteId, totalPrice: input.totalPrice };
@@ -297,6 +320,32 @@ export const appRouter = router({
           await deleteGalleryImage(input.id);
           return { success: true };
         }),
+    }),
+
+    // Follow-up reminders
+    followUp: router({
+      check: adminProcedure.mutation(async () => {
+        const unfollowed = await getUnfollowedQuotes(24);
+        let sent = 0;
+        for (const q of unfollowed) {
+          const hoursAgo = Math.round((Date.now() - new Date(q.createdAt).getTime()) / (1000 * 60 * 60));
+          try {
+            const ok = await sendFollowUpReminderEmail({
+              customerName: q.customerName,
+              customerEmail: q.customerEmail,
+              customerPhone: q.customerPhone,
+              address: q.address,
+              totalPrice: Number(q.totalPrice),
+              quoteId: q.id,
+              hoursAgo,
+            });
+            if (ok) sent++;
+          } catch (e) {
+            console.warn(`Failed to send follow-up for quote #${q.id}:`, e);
+          }
+        }
+        return { checked: unfollowed.length, sent };
+      }),
     }),
 
     // Contact submissions

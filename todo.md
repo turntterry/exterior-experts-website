@@ -125,3 +125,5 @@
 - [x] Investigate and fix missing email/notifications after customer submits a quote (Manus notifications working, adding email)
 - [x] Add email notifications to randall@exteriorexperts.co for new quote submissions
 - [x] Add email notifications to randall@exteriorexperts.co for new contact form submissions
+- [x] Add customer confirmation email after quote submission
+- [x] Add automated follow-up reminder for unanswered quotes (24hr)

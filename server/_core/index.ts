@@ -7,6 +7,8 @@ import { registerOAuthRoutes } from "./oauth";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
+import { getUnfollowedQuotes } from "../db";
+import { sendFollowUpReminderEmail } from "../email";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -35,6 +37,35 @@ async function startServer() {
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
+  // Cron endpoint for follow-up reminders (can be called by external cron or internal timer)
+  app.post("/api/cron/follow-up", async (req, res) => {
+    try {
+      const unfollowed = await getUnfollowedQuotes(24);
+      let sent = 0;
+      for (const q of unfollowed) {
+        const hoursAgo = Math.round((Date.now() - new Date(q.createdAt).getTime()) / (1000 * 60 * 60));
+        try {
+          const ok = await sendFollowUpReminderEmail({
+            customerName: q.customerName,
+            customerEmail: q.customerEmail,
+            customerPhone: q.customerPhone,
+            address: q.address,
+            totalPrice: Number(q.totalPrice),
+            quoteId: q.id,
+            hoursAgo,
+          });
+          if (ok) sent++;
+        } catch (e) {
+          console.warn(`Follow-up failed for quote #${q.id}:`, e);
+        }
+      }
+      res.json({ checked: unfollowed.length, sent });
+    } catch (e) {
+      console.error("Follow-up cron error:", e);
+      res.status(500).json({ error: "Internal error" });
+    }
+  });
+
   // tRPC API
   app.use(
     "/api/trpc",
@@ -59,6 +90,31 @@ async function startServer() {
 
   server.listen(port, () => {
     console.log(`Server running on http://localhost:${port}/`);
+
+    // Auto-check for unfollowed quotes every 6 hours
+    const SIX_HOURS = 6 * 60 * 60 * 1000;
+    setInterval(async () => {
+      try {
+        const unfollowed = await getUnfollowedQuotes(24);
+        for (const q of unfollowed) {
+          const hoursAgo = Math.round((Date.now() - new Date(q.createdAt).getTime()) / (1000 * 60 * 60));
+          await sendFollowUpReminderEmail({
+            customerName: q.customerName,
+            customerEmail: q.customerEmail,
+            customerPhone: q.customerPhone,
+            address: q.address,
+            totalPrice: Number(q.totalPrice),
+            quoteId: q.id,
+            hoursAgo,
+          }).catch(() => {});
+        }
+        if (unfollowed.length > 0) {
+          console.log(`[Follow-Up] Checked ${unfollowed.length} unfollowed quotes`);
+        }
+      } catch (e) {
+        console.warn("[Follow-Up] Auto-check error:", e);
+      }
+    }, SIX_HOURS);
   });
 }
 
