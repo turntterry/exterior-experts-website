@@ -284,9 +284,19 @@ export default function QuoteTool() {
               {step === 3 && <StepDetails selectedServices={selectedServices} serviceInputs={serviceInputs} updateServiceInput={updateServiceInput} pricingResults={pricingResults} getServiceConfig={getServiceConfig} />}
               {step === 4 && <StepReview pricingResults={pricingResults} quoteSummary={quoteSummary} serviceInputs={serviceInputs} address={`${address}, ${city}, ${stateVal} ${zip}`} name={name} />}
               {step === 5 && <StepSchedule preferredDate={preferredDate} setPreferredDate={setPreferredDate} preferredTime={preferredTime} setPreferredTime={setPreferredTime} referralSource={referralSource} setReferralSource={setReferralSource} photos={photos} setPhotos={setPhotos} uploading={uploading} handlePhotoUpload={handlePhotoUpload} fileInputRef={fileInputRef} />}
+              {step === 6 && (
+                <div className="text-center py-4">
+                  <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                    <CheckCircle className="w-8 h-8 text-primary" />
+                  </div>
+                  <h2 className="font-heading font-bold text-2xl mb-2">Ready to Submit?</h2>
+                  <p className="text-muted-foreground mb-4">Your estimated total is <span className="font-bold text-foreground text-lg">${quoteSummary.totalPrice.toFixed(2)}</span></p>
+                  <p className="text-sm text-muted-foreground max-w-md mx-auto">By submitting, you'll receive a confirmation email with your quote details. We'll reach out within 24 hours to confirm measurements and schedule your service.</p>
+                </div>
+              )}
 
               {/* Navigation */}
-              <div className="flex justify-between mt-8 pt-4 border-t">
+              <div className={`flex justify-between mt-8 ${step < 6 ? 'pt-4 border-t' : ''}`}>
                 {step > 0 ? (
                   <Button variant="outline" onClick={() => setStep(step - 1)}>
                     <ArrowLeft className="w-4 h-4 mr-1" /> Back

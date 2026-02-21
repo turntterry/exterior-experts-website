@@ -127,3 +127,5 @@
 - [x] Add email notifications to randall@exteriorexperts.co for new contact form submissions
 - [x] Add customer confirmation email after quote submission
 - [x] Add automated follow-up reminder for unanswered quotes (24hr)
+- [x] Fix phone validation error on quote submit (too strict, requires >=7 chars)
+- [x] Replace empty submit step with "Ready to Submit?" confirmation screen with total and description

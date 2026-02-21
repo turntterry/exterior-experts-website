@@ -42,7 +42,7 @@ export const appRouter = router({
       .input(z.object({
         customerName: z.string().min(1),
         customerEmail: z.string().email(),
-        customerPhone: z.string().min(7),
+        customerPhone: z.string().min(1),
         address: z.string().min(1),
         city: z.string().optional(),
         state: z.string().optional(),
