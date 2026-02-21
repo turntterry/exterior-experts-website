@@ -6,8 +6,10 @@ import { BreadcrumbSchema } from "@/components/SchemaMarkup";
 import { trpc } from "@/lib/trpc";
 import { ArrowRight, X } from "lucide-react";
 import { useState, useMemo } from "react";
+import { useCanonical } from "@/hooks/useCanonical";
 
 export default function Gallery() {
+  useCanonical("/gallery");
   const { data: dbImages } = trpc.gallery.list.useQuery();
   const [filter, setFilter] = useState("all");
   const [lightbox, setLightbox] = useState<string | null>(null);

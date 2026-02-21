@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "wouter";
 import { BUSINESS, SERVICES, LOCATIONS, SEED_GALLERY } from "@shared/data";
 import { LocalBusinessSchema, WebSiteSchema } from "@/components/SchemaMarkup";
+import { useCanonical } from "@/hooks/useCanonical";
 import {
   Phone, Star, Shield, Award, Clock, CheckCircle, ArrowRight,
   Home as HomeIcon, Droplets, SquareStack, Filter, LayoutGrid, Triangle, Fence, MapPin,
@@ -15,6 +16,7 @@ const ICON_MAP: Record<string, React.ElementType> = {
 };
 
 export default function Home() {
+  useCanonical("/");
   return (
     <SiteLayout>
       <LocalBusinessSchema />

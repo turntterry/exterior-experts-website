@@ -10,9 +10,11 @@ import { BreadcrumbSchema } from "@/components/SchemaMarkup";
 import { trpc } from "@/lib/trpc";
 import { Phone, Mail, MapPin, Clock, CheckCircle } from "lucide-react";
 import { useState } from "react";
+import { useCanonical } from "@/hooks/useCanonical";
 import { toast } from "sonner";
 
 export default function Contact() {
+  useCanonical("/contact");
   const [form, setForm] = useState({ name: "", email: "", phone: "", service: "", message: "", address: "" });
   const [submitted, setSubmitted] = useState(false);
   const submitMutation = trpc.contact.submit.useMutation({

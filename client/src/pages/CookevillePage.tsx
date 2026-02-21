@@ -10,6 +10,7 @@ import {
   SquareStack, Filter, LayoutGrid, Triangle, Fence,
 } from "lucide-react";
 import { useEffect } from "react";
+import { useCanonical } from "@/hooks/useCanonical";
 
 // ─── FAQ Data for Schema + Rendering ────────────────────────────────
 const COOKEVILLE_FAQ = [
@@ -160,7 +161,8 @@ function CookevilleFAQSchema() {
 
 // ─── Main Component ─────────────────────────────────────────────────
 export default function CookevillePage() {
-  const location = LOCATIONS.find((l) => l.id === "cookeville")!;
+  const location = LOCATIONS.find(l => l.id === "cookeville")!;
+  useCanonical("/service-areas/cookeville-tn");
 
   useEffect(() => {
     document.title = "Exterior Cleaning in Cookeville, TN | Exterior Experts";
@@ -168,7 +170,7 @@ export default function CookevillePage() {
     if (metaDesc) {
       metaDesc.setAttribute("content", "Professional pressure washing & exterior cleaning in Cookeville, TN. Licensed, insured, satisfaction guaranteed. Free quotes available.");
     }
-  }, []);
+  }, [location]);
 
   return (
     <SiteLayout>

@@ -7,8 +7,10 @@ import { BreadcrumbSchema } from "@/components/SchemaMarkup";
 import { MapPin, ArrowRight, Phone } from "lucide-react";
 import { MapView } from "@/components/Map";
 import { useRef } from "react";
+import { useCanonical } from "@/hooks/useCanonical";
 
 export default function ServiceAreas() {
+  useCanonical("/service-areas");
   const mapRef = useRef<google.maps.Map | null>(null);
 
   const origin = typeof window !== "undefined" ? window.location.origin : "";

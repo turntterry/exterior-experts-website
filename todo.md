@@ -132,3 +132,4 @@
 - [ ] Test email system end-to-end (owner notification + customer confirmation)
 - [ ] Add 3-day automated customer follow-up email for unanswered quotes
 - [ ] Fix Google Search Console noindex issue - ensure site is published and indexable
+- [x] Fix canonical tags - each page now self-references its own URL dynamically via useCanonical hook

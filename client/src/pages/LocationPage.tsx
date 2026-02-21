@@ -6,6 +6,7 @@ import { BUSINESS, SERVICES, LOCATIONS } from "@shared/data";
 import { LocationSchema } from "@/components/SchemaMarkup";
 import { Phone, ArrowRight, MapPin, CheckCircle } from "lucide-react";
 import { useEffect } from "react";
+import { useCanonical } from "@/hooks/useCanonical";
 
 interface LocationPageProps {
   locationId: string;
@@ -39,6 +40,7 @@ export default function LocationPage({ locationId }: LocationPageProps) {
   if (!location) return null;
 
   const locationName = `${location.name}, ${location.state}`;
+  useCanonical(`/service-areas/${location.slug}`);
 
   useEffect(() => {
     document.title = `Exterior Cleaning ${location.name}, TN | Exterior Experts`;

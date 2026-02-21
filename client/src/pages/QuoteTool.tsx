@@ -22,6 +22,7 @@ import {
   Ruler, FlipHorizontal, Info,
 } from "lucide-react";
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
+import { useCanonical } from "@/hooks/useCanonical";
 import { toast } from "sonner";
 
 const ICON_MAP: Record<string, React.ElementType> = {
@@ -54,6 +55,7 @@ const SLIDER_DEFAULTS: Record<string, { min: number; max: number; step: number; 
 const STEPS = ["Address", "Contact", "Services", "Details", "Review", "Schedule", "Submit"];
 
 export default function QuoteTool() {
+  useCanonical("/instant-quote");
   const { data: pricingData, isLoading: pricingLoading } = trpc.quote.getPricing.useQuery();
   const submitMutation = trpc.quote.submit.useMutation();
   const uploadMutation = trpc.quote.uploadPhoto.useMutation();

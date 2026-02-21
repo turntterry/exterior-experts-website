@@ -6,6 +6,7 @@ import { BUSINESS, SERVICES, LOCATIONS, SEED_GALLERY } from "@shared/data";
 import { ServiceSchema } from "@/components/SchemaMarkup";
 import { Phone, ArrowRight, CheckCircle, Star, Shield, Clock } from "lucide-react";
 import { useEffect } from "react";
+import { useCanonical } from "@/hooks/useCanonical";
 
 interface ServicePageProps {
   serviceId: string;
@@ -99,93 +100,76 @@ const SERVICE_CONTENT: Record<string, {
       "Prevents pest nesting — clogged gutters attract birds, wasps, and mosquitoes",
     ],
     process: [
-      { title: "Set up safely", desc: "We position ladders and check stability before anyone goes up. Safety isn't optional." },
-      { title: "Hand-clean all gutters", desc: "We remove debris by hand — leaves, sticks, shingle grit, packed dirt, whatever's in there. It all comes out." },
-      { title: "Flush downspouts", desc: "We run water through every downspout to make sure it's flowing freely. If there's a clog, we clear it." },
-      { title: "Inspect for damage", desc: "While we're up there, we check for loose brackets, sagging sections, leaks, and any damage that needs attention." },
-      { title: "Ground cleanup", desc: "All the debris we pulled out of your gutters gets cleaned up from the ground. We leave your property cleaner than we found it." },
+      { title: "Inspect gutters and downspouts", desc: "We check the full length of your gutters, note any damage or areas of concern, and plan our approach." },
+      { title: "Hand-clean all debris", desc: "We remove leaves, sticks, shingle grit, and packed buildup by hand. No blowers or high-pressure methods that can damage gutters." },
+      { title: "Flush downspouts", desc: "We run water through every downspout to make sure they're draining freely and not clogged further down." },
+      { title: "Check for damage", desc: "While we're up there, we look for loose brackets, sagging sections, leaks, or damage that might need attention." },
+      { title: "Final walkthrough", desc: "We show you what we found and let you know if any repairs are recommended." },
     ],
     faq: [
-      { q: "How often should gutters be cleaned?", a: "Twice a year minimum — once in late spring after the pollen and seeds are done, and once in late fall after the leaves drop. If you have a lot of trees hanging over your roof, quarterly is better." },
-      { q: "Do you check for damage?", a: "Yes. We inspect your gutters during every cleaning and let you know if we find anything that needs repair — loose brackets, sagging sections, leaks, or rust." },
-      { q: "Can you clean gutters on tall homes?", a: "Yes. We have the ladders and equipment to safely clean gutters on two and three-story homes." },
+      { q: "How often should gutters be cleaned?", a: "At least once a year, ideally in fall after leaves drop. If you have a lot of trees, twice a year (spring and fall) is better. In winter, ice dams form in clogged gutters, which can cause serious damage." },
+      { q: "What if my gutters are damaged?", a: "We'll let you know what we find. Minor issues like loose brackets can often be tightened during cleaning. For major damage, we can recommend contractors or discuss options." },
+      { q: "Do you clean gutters on all roof types?", a: "Yes. We're comfortable working on all roof types — shingle, metal, tile, etc. We adjust our technique based on your roof." },
     ],
-    whyItMatters: "Gutters exist for one reason: to move water away from your home. When they're clogged, water goes where it shouldn't — into your soffit, down your walls, and around your foundation. Foundation repair costs thousands. Gutter cleaning costs a fraction of that. It's basic home maintenance that prevents expensive problems.",
-  },
-  driveway_cleaning: {
-    intro: "Your driveway takes a beating. Between vehicle traffic, oil drips, tire marks, and Tennessee's humidity feeding algae growth, concrete driveways go from clean to dingy faster than you'd expect. Most homeowners don't realize how dark their driveway has gotten until they see it after a professional cleaning — the difference is dramatic. We use commercial surface cleaning equipment that delivers even, consistent results across the entire surface.",
-    benefits: [
-      "Removes oil stains, tire marks, and years of embedded dirt",
-      "Eliminates algae and moss that make concrete slippery when wet",
-      "Commercial surface cleaner for even, streak-free results",
-      "Restores the original light color of your concrete",
-      "Makes your entire property look better from the street",
-    ],
-    process: [
-      { title: "Pre-treat stains", desc: "Oil spots and heavy stains get a degreaser application first. This breaks down the oil so the pressure washer can lift it out of the pores." },
-      { title: "Surface clean the driveway", desc: "Our commercial surface cleaner covers a wide area with consistent pressure — no tiger stripes or uneven patches." },
-      { title: "Detail edges and cracks", desc: "We hand-wand along the garage door, sidewalk edges, and expansion joints for a clean finish everywhere." },
-      { title: "Rinse and inspect", desc: "Everything gets rinsed clean and we check for any spots that need a second pass." },
-    ],
-    faq: [
-      { q: "Can you remove oil stains from my driveway?", a: "Most oil stains improve significantly with degreaser and pressure washing. Fresh stains usually come out completely. Older, deep stains may lighten rather than disappear entirely, but the improvement is always noticeable." },
-      { q: "How long does it take?", a: "A standard two-car driveway takes 30 to 60 minutes. Larger driveways or heavily stained surfaces take longer. We'll give you a time estimate with your quote." },
-      { q: "How often should I have my driveway cleaned?", a: "Once a year keeps most driveways looking good. If your driveway is shaded and prone to algae, twice a year might be worth it." },
-    ],
-    whyItMatters: "Your driveway is the first surface visitors see and walk on. A clean driveway sets the tone for your entire property. It's also a safety issue — algae-covered concrete gets dangerously slippery when it rains. Annual cleaning keeps it looking good and keeps your family and guests safe.",
+    whyItMatters: "Gutters are one of those things homeowners don't think about until something goes wrong. But clogged gutters lead to water damage that's expensive to fix — rotted fascia, foundation issues, basement water intrusion, and roof damage. Regular gutter cleaning is cheap insurance against much bigger problems.",
   },
   roof_cleaning: {
-    intro: "Those black streaks on your roof aren't dirt — they're a type of algae called Gloeocapsa Magma. It feeds on the limestone filler in your shingles, and once it takes hold, it spreads. Beyond looking terrible, it actually shortens your roof's lifespan by degrading the shingle material. We clean roofs using the soft wash method — the same approach recommended by shingle manufacturers like GAF and CertainTeed. No high pressure ever touches your shingles.",
+    intro: "Roof stains, moss, and algae aren't just cosmetic. They hold moisture against your shingles, which accelerates deterioration and can lead to leaks. We use a soft wash approach — not high-pressure blasting, which can damage shingles and void warranties. Our method kills the growth at the root, rinses it away safely, and helps extend your roof's life.",
     benefits: [
-      "Removes black streaks caused by Gloeocapsa Magma algae",
-      "Soft wash method — manufacturer-recommended, no high pressure",
-      "Kills moss, lichen, and algae at the root",
-      "Can extend your roof's lifespan by years",
-      "Restores your roof's appearance without risking shingle damage",
+      "Removes algae, moss, and lichen that damage shingles",
+      "Soft wash method that won't void roof warranties",
+      "Extends roof life by preventing moisture retention",
+      "Improves curb appeal and home value",
+      "Prevents premature shingle deterioration",
     ],
     process: [
-      { title: "Ground-level inspection", desc: "We assess your roof's condition from the ground, checking for damage, heavy growth areas, and the pitch we'll be working with." },
-      { title: "Protect your landscaping", desc: "Plants, flower beds, and outdoor items near the house get covered or wetted down before we start." },
-      { title: "Apply soft wash solution", desc: "Our cleaning solution goes on at low pressure. It soaks into the algae, moss, and lichen and starts killing it at the root." },
-      { title: "Let it dwell", desc: "The solution needs time to work. We let it sit for the right amount of time based on how heavy the growth is." },
-      { title: "Gentle rinse", desc: "We rinse with low pressure. Your roof will look dramatically better immediately, and the results continue improving over the next 2-4 weeks as dead growth washes away with rain." },
+      { title: "Inspect the roof", desc: "We check for damage, loose shingles, and areas of heavy growth before we start." },
+      { title: "Apply soft wash solution", desc: "Our cleaning solution goes on at low pressure, soaking into the algae and moss to kill it at the root." },
+      { title: "Let it work", desc: "The solution needs time to do its job. We let it dwell long enough to kill the growth effectively." },
+      { title: "Rinse carefully", desc: "We rinse with low pressure, working from top to bottom. No shingle damage, no warranty issues." },
+      { title: "Final inspection", desc: "We check the roof to make sure the job is complete and no damage occurred." },
     ],
     faq: [
-      { q: "Is roof cleaning safe for shingles?", a: "Yes. We use the soft wash method, which is the only cleaning method recommended by shingle manufacturers. No high pressure ever touches your roof. High-pressure washing voids most shingle warranties — we don't do that." },
-      { q: "How long do the results last?", a: "Typically 3 to 5 years depending on your environment. Roofs with heavy tree coverage may see regrowth sooner. We'll give you an honest estimate for your specific roof." },
-      { q: "Will my roof look perfect right away?", a: "It will look dramatically better immediately. Some residual staining continues to fade over the following 2 to 4 weeks as rain washes away the dead algae. The full result takes a little time, but it's worth the wait." },
+      { q: "Is soft washing safe for my roof?", a: "Yes. Soft washing uses low pressure and professional cleaning solutions. It's safe for all shingle types and won't void your roof warranty. High-pressure washing, on the other hand, can damage shingles and is often not recommended by manufacturers." },
+      { q: "How often should a roof be cleaned?", a: "It depends on your roof's condition and local climate. Most roofs benefit from cleaning every 2-3 years. If you see moss or algae growth, that's a sign it's time." },
+      { q: "Will this prevent moss from coming back?", a: "Our cleaning removes existing growth and kills spores. However, moss can return over time, especially in shaded areas. Regular cleaning helps keep it under control." },
     ],
-    whyItMatters: "A new roof costs $8,000 to $15,000 or more. Roof cleaning costs a fraction of that and can add years to your roof's life by removing the organisms that are actively degrading your shingles. It also makes a massive difference in curb appeal — black streaky roofs make even nice homes look neglected.",
+    whyItMatters: "A clean roof looks better and lasts longer. Algae and moss hold moisture against your shingles, which speeds up deterioration. If left unchecked, this can lead to leaks and expensive repairs. Regular roof cleaning is a preventive measure that protects your investment.",
   },
   deck_cleaning: {
-    intro: "Wood and composite decks take a beating from Tennessee weather. UV exposure, rain, humidity, and foot traffic combine to leave decks looking gray, weathered, and covered in mold or mildew. A dirty deck isn't just an eyesore — it's slippery when wet and the moisture trapped by mold growth accelerates wood rot. We clean decks using the right method for your material, whether that's natural wood, pressure-treated lumber, or composite like Trex.",
+    intro: "Decks take a beating from weather, foot traffic, and organic growth. Over time, dirt, algae, and mildew work into the wood grain, making the surface slippery and accelerating wood deterioration. We clean your deck thoroughly without damaging the wood, leaving it looking fresh and ready for sealing or staining if you choose.",
     benefits: [
-      "Removes mold, mildew, and the gray weathered look",
-      "Restores natural wood grain and color",
-      "Safe for all deck materials — wood, composite, and Trex",
-      "Prepares the surface for staining or sealing",
-      "Eliminates slippery mold that creates a fall hazard",
+      "Removes dirt, algae, mildew, and organic buildup",
+      "Restores the natural color of your wood",
+      "Makes the deck safer by removing slippery growth",
+      "Prepares the surface for sealing or staining",
+      "Extends deck life by removing moisture-trapping growth",
     ],
     process: [
-      { title: "Inspect your deck", desc: "We check the material type, condition, and any areas of concern — loose boards, popped nails, soft spots." },
-      { title: "Apply cleaning solution", desc: "We use a cleaning solution matched to your deck material. Wood gets a different treatment than composite." },
-      { title: "Let it penetrate", desc: "The solution needs time to break down the mold, mildew, and grime that's worked into the surface." },
-      { title: "Wash at the right pressure", desc: "We adjust our pressure based on your deck material. Wood gets a lighter touch than concrete. Composite gets even less pressure." },
-      { title: "Rinse and inspect", desc: "Everything gets rinsed clean. We check the results and hit any spots that need a second pass." },
+      { title: "Inspect the deck", desc: "We check for loose boards, damage, and areas of heavy growth before we start." },
+      { title: "Pre-treat problem areas", desc: "Heavy mildew or algae growth gets a pre-treatment to break it down." },
+      { title: "Clean the surface", desc: "We use low-pressure washing with appropriate cleaning solutions to remove buildup without damaging the wood." },
+      { title: "Clean between boards", desc: "We pay special attention to cracks and gaps where debris and growth accumulate." },
+      { title: "Final rinse and inspection", desc: "We rinse thoroughly and check for any missed spots." },
     ],
     faq: [
-      { q: "Can you clean composite and Trex decks?", a: "Yes. We adjust our cleaning method and pressure settings specifically for composite materials. They require a different approach than natural wood, and we know the difference." },
-      { q: "Should I stain my deck after cleaning?", a: "If your deck is natural wood, cleaning is the ideal preparation for staining or sealing. We recommend applying stain within 1-2 weeks of cleaning while the wood is clean and the pores are open." },
-      { q: "How long does deck cleaning take?", a: "Most standard-sized decks take 1 to 2 hours. Large multi-level decks or heavily stained surfaces may take longer." },
+      { q: "Will pressure washing damage my deck?", a: "Not when done correctly. We use low pressure and the right technique for wood decks. High-pressure washing can splinter wood and cause damage." },
+      { q: "Should I seal my deck after cleaning?", a: "It's a good idea. Cleaning removes the protective layer, so sealing afterward helps protect the wood and extend the deck's life. We can recommend sealers or contractors if needed." },
+      { q: "How often should a deck be cleaned?", a: "Once a year is typical. If your deck gets heavy shade or is surrounded by trees, twice a year might be better." },
     ],
     whyItMatters: "Your deck is where you spend time with family, grill out, and relax. A clean deck is more inviting, safer to walk on, and lasts longer. If you're planning to stain or seal, cleaning first is essential — stain won't adhere properly to a dirty surface. It's a straightforward job that makes a real difference in how you use and enjoy your outdoor space.",
   },
 };
 
 export default function ServicePage({ serviceId, locationId }: ServicePageProps) {
-  const service = SERVICES.find(s => s.id === serviceId);
-  const location = locationId ? LOCATIONS.find(l => l.id === locationId) : LOCATIONS[0];
-  if (!service || !location) return null;
+  const service = SERVICES.find(s => s.id === serviceId)!;
+  const location = (locationId ? LOCATIONS.find(l => l.id === locationId) : LOCATIONS.find(l => l.id === "cookeville"))!;
+  
+  // Determine the canonical path based on service and location
+  const canonicalPath = locationId && locationId !== "cookeville" && location
+    ? `/${service.slug}-${location.slug}`
+    : `/${service.slug}-cookeville-tn`;
+  useCanonical(canonicalPath);
 
   const content = SERVICE_CONTENT[serviceId] || SERVICE_CONTENT.pressure_washing;
   const relatedImages = SEED_GALLERY.filter(g => g.service === serviceId).slice(0, 4);
@@ -202,7 +186,7 @@ export default function ServicePage({ serviceId, locationId }: ServicePageProps)
     if (metaKeywords) {
       metaKeywords.setAttribute("content", `${service.name.toLowerCase()} ${location.name} TN, ${service.shortName.toLowerCase()} ${location.name}, exterior cleaning ${location.name} TN`);
     }
-  }, [service, location]);
+  }, [service, location, locationName]);
 
   return (
     <SiteLayout>
@@ -250,45 +234,33 @@ export default function ServicePage({ serviceId, locationId }: ServicePageProps)
                   </div>
                 ))}
               </div>
-              <div className="mt-8">
-                <Link href="/instant-quote">
-                  <Button className="bg-primary hover:bg-navy-light text-white font-semibold">
-                    Get Your Free Quote <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
-                </Link>
-              </div>
             </div>
-            {relatedImages.length > 0 && (
-              <div className="grid grid-cols-2 gap-4">
-                {relatedImages.map((img, i) => (
-                  <div key={i} className="rounded-xl overflow-hidden aspect-[4/3]">
-                    <img src={img.url} alt={img.title} className="w-full h-full object-cover" loading="lazy" />
-                  </div>
-                ))}
-              </div>
-            )}
+            <div className="grid grid-cols-2 gap-3">
+              {relatedImages.map((img, i) => (
+                <img key={i} src={img.url} alt={img.title} className="rounded-lg object-cover h-48 w-full" />
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Process */}
-      <section className="py-16 bg-secondary">
+      {/* Our Process */}
+      <section className="py-16 bg-navy/5">
         <div className="container">
-          <h2 className="font-heading font-bold text-2xl md:text-3xl text-center mb-4">
-            How We Handle {service.name}
-          </h2>
-          <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-            Every job follows the same process. No shortcuts, no skipped steps.
-          </p>
-          <div className="max-w-3xl mx-auto space-y-8">
+          <h2 className="font-heading font-bold text-2xl md:text-3xl mb-12 text-center">Our Process</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6">
             {content.process.map((step, i) => (
-              <div key={i} className="flex gap-5 items-start">
-                <div className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold shrink-0">
-                  {i + 1}
-                </div>
-                <div>
-                  <h3 className="font-heading font-bold text-lg mb-1">{step.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed">{step.desc}</p>
+              <div key={i} className="relative">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0">
+                    <div className="flex items-center justify-center h-10 w-10 rounded-full bg-primary text-white font-bold">
+                      {i + 1}
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="font-heading font-bold text-lg mb-2">{step.title}</h3>
+                    <p className="text-sm text-muted-foreground">{step.desc}</p>
+                  </div>
                 </div>
               </div>
             ))}
@@ -299,69 +271,55 @@ export default function ServicePage({ serviceId, locationId }: ServicePageProps)
       {/* Why It Matters */}
       <section className="py-16 bg-white">
         <div className="container max-w-3xl">
-          <h2 className="font-heading font-bold text-2xl md:text-3xl mb-6 text-center">
-            Why {service.name} Matters for Your Home
-          </h2>
-          <p className="text-muted-foreground leading-relaxed text-lg text-center">{content.whyItMatters}</p>
+          <h2 className="font-heading font-bold text-2xl md:text-3xl mb-6">Why It Matters</h2>
+          <p className="text-muted-foreground leading-relaxed text-lg">{content.whyItMatters}</p>
         </div>
       </section>
 
       {/* FAQ */}
-      <section className="py-16 bg-secondary">
+      <section className="py-16 bg-navy/5">
         <div className="container max-w-3xl">
-          <h2 className="font-heading font-bold text-2xl md:text-3xl text-center mb-12">
-            Common Questions About {service.name}
-          </h2>
+          <h2 className="font-heading font-bold text-2xl md:text-3xl mb-12 text-center">Frequently Asked Questions</h2>
           <div className="space-y-6">
             {content.faq.map((item, i) => (
-              <Card key={i}>
-                <CardContent className="p-6">
-                  <h3 className="font-heading font-bold text-lg mb-2">{item.q}</h3>
-                  <p className="text-muted-foreground leading-relaxed">{item.a}</p>
-                </CardContent>
-              </Card>
+              <div key={i}>
+                <h3 className="font-heading font-bold text-lg mb-3">{item.q}</h3>
+                <p className="text-muted-foreground leading-relaxed">{item.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Related Services */}
+      <section className="py-16 bg-white">
+        <div className="container">
+          <h2 className="font-heading font-bold text-2xl md:text-3xl mb-8">Related Services</h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            {SERVICES.filter(s => s.id !== serviceId).slice(0, 3).map(s => (
+              <Link key={s.id} href={`/${s.slug}-cookeville-tn`}>
+                <Card className="group hover:shadow-md transition-all cursor-pointer h-full">
+                  <CardContent className="p-6">
+                    <h3 className="font-heading font-bold text-lg mb-2 group-hover:text-primary transition-colors">{s.name}</h3>
+                    <p className="text-sm text-muted-foreground">{s.description}</p>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-navy text-center">
-        <div className="container">
-          <h2 className="font-heading font-bold text-3xl text-white mb-4">
-            Need {service.name} in {locationName}?
-          </h2>
-          <p className="text-white/80 mb-8 max-w-xl mx-auto">
-            Get a price in under 2 minutes. No obligation, no sales pitch.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/instant-quote">
-              <Button size="lg" className="bg-sky hover:bg-sky-light text-white font-bold">
-                Get Instant Quote <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </Link>
-            <a href={`tel:${BUSINESS.phoneRaw}`}>
-              <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 font-bold">
-                <Phone className="w-4 h-4 mr-2" /> {BUSINESS.phone}
-              </Button>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Internal links */}
-      <section className="py-12 bg-secondary">
-        <div className="container">
-          <h3 className="font-heading font-bold text-xl mb-6 text-center">Other Services We Offer</h3>
-          <div className="flex flex-wrap justify-center gap-3">
-            {SERVICES.filter(s => s.id !== serviceId).map(s => (
-              <Link key={s.id} href={`/${s.slug}-cookeville-tn`}>
-                <Button variant="outline" size="sm" className="border-primary/30 text-primary hover:bg-primary hover:text-white">
-                  {s.name}
-                </Button>
-              </Link>
-            ))}
-          </div>
+      <section className="py-16 bg-primary text-white">
+        <div className="container text-center">
+          <h2 className="font-heading font-bold text-3xl md:text-4xl mb-6">Ready to Get Started?</h2>
+          <p className="text-lg mb-8 opacity-90 max-w-2xl mx-auto">Get your free estimate today. No obligation, no pressure — just honest pricing and professional service.</p>
+          <Link href="/instant-quote">
+            <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-bold">
+              Get Instant Quote <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+          </Link>
         </div>
       </section>
     </SiteLayout>
