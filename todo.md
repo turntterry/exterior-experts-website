@@ -133,3 +133,11 @@
 - [ ] Add 3-day automated customer follow-up email for unanswered quotes
 - [ ] Fix Google Search Console noindex issue - ensure site is published and indexable
 - [x] Fix canonical tags - each page now self-references its own URL dynamically via useCanonical hook
+- [ ] Set up Stripe feature and configure API keys
+- [ ] Create payment products/subscriptions database schema
+- [ ] Build Stripe checkout and payment procedures
+- [ ] Create payment UI components and checkout flow
+- [ ] Implement webhook handling for payment events
+- [ ] Test payment flow end-to-end
+- [x] Implement admin authentication guard on all admin routes
+- [x] Add authorization checks to prevent non-admin access to admin dashboard

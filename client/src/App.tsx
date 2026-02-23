@@ -6,6 +6,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import { lazy, Suspense } from "react";
+import { AdminGuard } from "./components/AdminGuard";
 
 // Lazy load pages for better performance
 const ServicePage = lazy(() => import("./pages/ServicePage"));
@@ -61,13 +62,13 @@ function Router() {
         <Route path="/gallery" component={Gallery} />
         {/* Contact */}
         <Route path="/contact" component={Contact} />
-        {/* Admin routes */}
-        <Route path="/admin" component={AdminDashboard} />
-        <Route path="/admin/quotes" component={AdminQuotes} />
-        <Route path="/admin/quotes/:id" component={AdminQuoteDetail} />
-        <Route path="/admin/pricing" component={AdminPricing} />
-        <Route path="/admin/gallery" component={AdminGallery} />
-        <Route path="/admin/contacts" component={AdminContacts} />
+        {/* Admin routes - protected by AdminGuard */}
+        <Route path="/admin" component={() => <AdminGuard><AdminDashboard /></AdminGuard>} />
+        <Route path="/admin/quotes" component={() => <AdminGuard><AdminQuotes /></AdminGuard>} />
+        <Route path="/admin/quotes/:id" component={() => <AdminGuard><AdminQuoteDetail /></AdminGuard>} />
+        <Route path="/admin/pricing" component={() => <AdminGuard><AdminPricing /></AdminGuard>} />
+        <Route path="/admin/gallery" component={() => <AdminGuard><AdminGallery /></AdminGuard>} />
+        <Route path="/admin/contacts" component={() => <AdminGuard><AdminContacts /></AdminGuard>} />
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />
       </Switch>
