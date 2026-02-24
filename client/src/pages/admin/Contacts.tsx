@@ -5,6 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { trpc } from "@/lib/trpc";
 import { Mail, Phone, Loader2, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
+import { useNoindex } from "@/hooks/useNoindex";
 
 const STATUS_COLORS: Record<string, string> = {
   new: "bg-blue-100 text-blue-700",
@@ -13,6 +14,7 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 export default function Contacts() {
+  useNoindex();
   const { data: contacts, isLoading, refetch } = trpc.admin.contacts.list.useQuery();
   const updateStatus = trpc.admin.contacts.updateStatus.useMutation({
     onSuccess: () => { toast.success("Status updated"); refetch(); },

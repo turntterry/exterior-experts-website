@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { toast } from "sonner";
+import { useNoindex } from "@/hooks/useNoindex";
 
 // ─── Field metadata for user-friendly labels & descriptions ─────────
 
@@ -191,6 +192,7 @@ const PACKAGE_LABELS: Record<string, { name: string; desc: string }> = {
 // ─── Main Component ─────────────────────────────────────────────────
 
 export default function Pricing() {
+  useNoindex();
   const { data: configs, isLoading, refetch } = trpc.admin.pricing.list.useQuery();
   const updateMutation = trpc.admin.pricing.update.useMutation({
     onSuccess: () => {

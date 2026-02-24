@@ -10,8 +10,10 @@ import { SERVICES } from "@shared/data";
 import { Upload, Trash2, Loader2, X, Image as ImageIcon } from "lucide-react";
 import { useState, useRef } from "react";
 import { toast } from "sonner";
+import { useNoindex } from "@/hooks/useNoindex";
 
 export default function GalleryManager() {
+  useNoindex();
   const { data: images, isLoading, refetch } = trpc.admin.gallery.list.useQuery();
   const uploadMutation = trpc.admin.gallery.upload.useMutation({
     onSuccess: () => { toast.success("Image uploaded!"); refetch(); setShowUpload(false); resetForm(); },

@@ -5,6 +5,7 @@ import { trpc } from "@/lib/trpc";
 import { Link } from "wouter";
 import { DollarSign, FileText, TrendingUp, Clock, Eye, ArrowRight, Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useNoindex } from "@/hooks/useNoindex";
 
 const STATUS_COLORS: Record<string, string> = {
   new: "bg-blue-100 text-blue-700",
@@ -15,6 +16,7 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 export default function AdminDashboard() {
+  useNoindex();
   const { data: stats, isLoading: statsLoading } = trpc.admin.quotes.stats.useQuery();
   const { data: recentQuotes, isLoading: quotesLoading } = trpc.admin.quotes.list.useQuery({ limit: 5, offset: 0 });
 

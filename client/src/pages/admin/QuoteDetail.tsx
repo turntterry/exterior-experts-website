@@ -8,8 +8,10 @@ import { trpc } from "@/lib/trpc";
 import { useRoute, Link } from "wouter";
 import { ArrowLeft, Phone, Mail, MapPin, Calendar, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useNoindex } from "@/hooks/useNoindex";
 
 export default function QuoteDetail() {
+  useNoindex();
   const [, params] = useRoute("/admin/quotes/:id");
   const quoteId = Number(params?.id);
   const { data: quote, isLoading, refetch } = trpc.admin.quotes.detail.useQuery({ id: quoteId }, { enabled: !!quoteId });

@@ -7,6 +7,7 @@ import { trpc } from "@/lib/trpc";
 import { Link } from "wouter";
 import { DollarSign, FileText, TrendingUp, Clock, Eye, Loader2 } from "lucide-react";
 import { useState, useMemo } from "react";
+import { useNoindex } from "@/hooks/useNoindex";
 
 const STATUS_COLORS: Record<string, string> = {
   new: "bg-blue-100 text-blue-700",
@@ -18,6 +19,7 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 export default function Quotes() {
+  useNoindex();
   const [statusFilter, setStatusFilter] = useState("all");
   const { data: quotes, isLoading } = trpc.admin.quotes.list.useQuery({
     limit: 100,
