@@ -2,6 +2,8 @@ import "dotenv/config";
 import express from "express";
 import { createServer } from "http";
 import net from "net";
+import fs from "fs";
+import path from "path";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { registerOAuthRoutes } from "./oauth";
 import { appRouter } from "../routers";
@@ -63,6 +65,31 @@ async function startServer() {
     } catch (e) {
       console.error("Follow-up cron error:", e);
       res.status(500).json({ error: "Internal error" });
+    }
+  });
+
+  // Add X-Robots-Tag noindex header to all admin routes
+  app.use("/admin", (req, res, next) => {
+    res.set("X-Robots-Tag", "noindex, nofollow");
+    next();
+  });
+
+  // Sitemap route - filter out admin URLs
+  app.get("/sitemap.xml", (req, res) => {
+    const sitemapPath = process.env.NODE_ENV === "development"
+      ? path.resolve(import.meta.dirname, "../..", "dist", "public", "sitemap.xml")
+      : path.resolve(import.meta.dirname, "public", "sitemap.xml");
+    
+    try {
+      const sitemapContent = fs.readFileSync(sitemapPath, "utf-8");
+      const filtered = sitemapContent.replace(
+        /<url>\s*<loc>https:\/\/[^<]*\/admin[^<]*<\/loc>[^<]*<changefreq>[^<]*<\/changefreq>[^<]*<priority>[^<]*<\/priority>\s*<\/url>/gi,
+        ""
+      );
+      res.set("Content-Type", "application/xml");
+      res.send(filtered);
+    } catch (e) {
+      res.status(404).send("Sitemap not found");
     }
   });
 
