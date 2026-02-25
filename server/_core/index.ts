@@ -6,6 +6,7 @@ import fs from "fs";
 import path from "path";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { registerOAuthRoutes } from "./oauth";
+import { setupAdminRoutes } from "../admin-routes";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
@@ -39,6 +40,8 @@ async function startServer() {
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
+  // Admin routes with server-side auth enforcement
+  setupAdminRoutes(app);
   // Cron endpoint for follow-up reminders (can be called by external cron or internal timer)
   app.post("/api/cron/follow-up", async (req, res) => {
     try {
