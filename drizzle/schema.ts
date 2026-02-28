@@ -163,3 +163,34 @@ export const stripePayments = mysqlTable("stripe_payments", {
 
 export type StripePayment = typeof stripePayments.$inferSelect;
 export type InsertStripePayment = typeof stripePayments.$inferInsert;
+
+// ─── Visitor Tracking ────────────────────────────────────────────────
+export const visitorSessions = mysqlTable("visitor_sessions", {
+  id: int("id").autoincrement().primaryKey(),
+  sessionId: varchar("sessionId", { length: 255 }).notNull().unique(),
+  ipAddress: varchar("ipAddress", { length: 45 }),
+  userAgent: text("userAgent"),
+  country: varchar("country", { length: 100 }),
+  city: varchar("city", { length: 100 }),
+  deviceType: varchar("deviceType", { length: 50 }), // mobile, desktop, tablet
+  referrer: text("referrer"),
+  firstVisitAt: timestamp("firstVisitAt").defaultNow().notNull(),
+  lastVisitAt: timestamp("lastVisitAt").defaultNow().onUpdateNow().notNull(),
+  pageViewCount: int("pageViewCount").default(0),
+});
+
+export type VisitorSession = typeof visitorSessions.$inferSelect;
+export type InsertVisitorSession = typeof visitorSessions.$inferInsert;
+
+// ─── Page Views ──────────────────────────────────────────────────────
+export const pageViews = mysqlTable("page_views", {
+  id: int("id").autoincrement().primaryKey(),
+  sessionId: varchar("sessionId", { length: 255 }).notNull(),
+  pagePath: varchar("pagePath", { length: 500 }).notNull(),
+  pageTitle: varchar("pageTitle", { length: 255 }),
+  timeSpentSeconds: int("timeSpentSeconds").default(0),
+  viewedAt: timestamp("viewedAt").defaultNow().notNull(),
+});
+
+export type PageView = typeof pageViews.$inferSelect;
+export type InsertPageView = typeof pageViews.$inferInsert;

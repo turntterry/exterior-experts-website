@@ -22,6 +22,7 @@ import {
   cancelSubscription,
   getPaymentHistory,
 } from "./stripe-procedures";
+import { visitorRouter } from "./visitor-procedures";
 
 export const appRouter = router({
   system: systemRouter,
@@ -385,6 +386,9 @@ export const appRouter = router({
       getHistory: getPaymentHistory,
     }),
   }),
+
+  // Visitor Tracking
+  visitor: visitorRouter,
 });
 
 export type AppRouter = typeof appRouter;
