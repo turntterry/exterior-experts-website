@@ -149,3 +149,11 @@
 - [x] QA: Verify sitemap contains zero /admin URLs (confirmed)
 - [x] QA: Verify robots.txt blocks /admin (confirmed)
 - [x] QA: Verify /admin pages have noindex and require auth (confirmed)
+- [x] Create payment database schema (stripe_customers, stripe_subscriptions, stripe_payments tables)
+- [x] Build Stripe checkout session procedures (subscriptions and one-time payments)
+- [x] Create Stripe products configuration with 3 tiers (Starter, Professional, Enterprise)
+- [x] Add stripe router to tRPC with subscription and payment endpoints
+- [ ] Implement webhook handler for payment events (checkout.session.completed, customer.subscription.updated)
+- [ ] Create subscription management UI page
+- [ ] Create payment history page
+- [ ] Test payment flow end-to-end with Stripe test card

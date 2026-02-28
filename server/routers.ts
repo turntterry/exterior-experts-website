@@ -15,6 +15,13 @@ import { storagePut } from "./storage";
 import { notifyOwner } from "./_core/notification";
 import { nanoid } from "nanoid";
 import { sendQuoteNotificationEmail, sendContactNotificationEmail, sendCustomerConfirmationEmail, sendFollowUpReminderEmail } from "./email";
+import {
+  createSubscriptionCheckout,
+  createPaymentCheckout,
+  getActiveSubscription,
+  cancelSubscription,
+  getPaymentHistory,
+} from "./stripe-procedures";
 
 export const appRouter = router({
   system: systemRouter,
@@ -363,6 +370,19 @@ export const appRouter = router({
           await updateContactStatus(input.id, input.status);
           return { success: true };
         }),
+    }),
+  }),
+
+  // Stripe Payment Endpoints
+  stripe: router({
+    subscription: router({
+      createCheckout: createSubscriptionCheckout,
+      getActive: getActiveSubscription,
+      cancel: cancelSubscription,
+    }),
+    payment: router({
+      createCheckout: createPaymentCheckout,
+      getHistory: getPaymentHistory,
     }),
   }),
 });
