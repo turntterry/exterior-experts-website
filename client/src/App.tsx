@@ -7,7 +7,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import { lazy, Suspense } from "react";
 import { AdminGuard } from "./components/AdminGuard";
-import { useVisitorTracking } from "./hooks/useVisitorTracking";
+
 
 
 // Lazy load pages for better performance
@@ -35,9 +35,6 @@ function PageLoader() {
 }
 
 function Router() {
-  // Track visitor sessions and page views
-  useVisitorTracking();
-
   return (
     <Suspense fallback={<PageLoader />}>
       <Switch>
