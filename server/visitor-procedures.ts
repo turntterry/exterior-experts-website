@@ -26,12 +26,15 @@ export const trackPageViewProcedure = publicProcedure
         input.pageTitle || "Unknown Page"
       );
 
-      // Send email notification to owner
-      await sendVisitorNotificationEmail(
+      // Send email notification to owner (non-blocking)
+      // Fire and forget - don't wait for email to complete
+      sendVisitorNotificationEmail(
         input.sessionId,
         input.pagePath,
         input.pageTitle || "Unknown Page"
-      );
+      ).catch((err) => {
+        console.warn("[Visitor Tracking] Email send error (non-blocking):", err);
+      });
 
       return { success: true };
     } catch (error) {
