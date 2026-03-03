@@ -157,10 +157,7 @@
 - [ ] Create subscription management UI page
 - [ ] Create payment history page
 - [ ] Test payment flow end-to-end with Stripe test card
-- [x] Create visitor tracking database schema (visitor_sessions, page_views tables)
-- [x] Build visitor tracking API endpoint and middleware (trackPageView, getRecentVisitors)
+- [x] Create visitor tracking dat- [x] Create visitor tracking database schema (visitors, sessions, page_views tables)
+- [x] Build visitor tracking API endpoint and middleware
 - [x] Create email notification for visitor tracking (sends to owner for each page view)
-- [ ] Implement in-app notification system (notification center in admin dashboard)
-- [ ] Add browser push notification support (desktop alerts)
-- [ ] Create visitor analytics dashboard (view all visitors, page views, device types)
-- [ ] Test visitor tracking end-to-end with real page views
+- [x] DISABLED: Visitor tracking disabled due to excessive notifications and database errors

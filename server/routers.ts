@@ -22,7 +22,7 @@ import {
   cancelSubscription,
   getPaymentHistory,
 } from "./stripe-procedures";
-import { visitorRouter } from "./visitor-procedures";
+// import { visitorRouter } from "./visitor-procedures"; // DISABLED: Visitor tracking disabled due to excessive notifications
 
 export const appRouter = router({
   system: systemRouter,
@@ -388,7 +388,7 @@ export const appRouter = router({
   }),
 
   // Visitor Tracking
-  visitor: visitorRouter,
+  // visitor: visitorRouter, // DISABLED: Visitor tracking disabled due to excessive notifications
 });
 
 export type AppRouter = typeof appRouter;
