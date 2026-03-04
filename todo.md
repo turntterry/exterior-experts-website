@@ -153,10 +153,10 @@
 - [x] Build Stripe checkout session procedures (subscriptions and one-time payments)
 - [x] Create Stripe products configuration with 3 tiers (Starter, Professional, Enterprise)
 - [x] Add stripe router to tRPC with subscription and payment endpoints
-- [ ] Implement webhook handler for payment events (checkout.session.completed, customer.subscription.updated)
-- [ ] Create subscription management UI page
-- [ ] Create payment history page
-- [ ] Test payment flow end-to-end with Stripe test card
+- [x] Implement webhook handler for payment events (checkout.session.completed, customer.subscription.updated)
+- [x] Create subscription management UI page (/pricing with 3 tiers)
+- [x] Create payment history page (integrated with subscription management)
+- [x] Test payment flow end-to-end with Stripe test card
 - [x] Create visitor tracking dat- [x] Create visitor tracking database schema (visitors, sessions, page_views tables)
 - [x] Build visitor tracking API endpoint and middleware
 - [x] Create email notification for visitor tracking (sends to owner for each page view)

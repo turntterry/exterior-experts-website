@@ -18,6 +18,7 @@ const ServiceAreas = lazy(() => import("./pages/ServiceAreas"));
 const QuoteTool = lazy(() => import("./pages/QuoteTool"));
 const Gallery = lazy(() => import("./pages/Gallery"));
 const Contact = lazy(() => import("./pages/Contact"));
+const Pricing = lazy(() => import("./pages/Pricing"));
 const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
 const AdminQuotes = lazy(() => import("./pages/admin/Quotes"));
 const AdminQuoteDetail = lazy(() => import("./pages/admin/QuoteDetail"));
@@ -65,6 +66,8 @@ function Router() {
         <Route path="/gallery" component={Gallery} />
         {/* Contact */}
         <Route path="/contact" component={Contact} />
+        {/* Pricing */}
+        <Route path="/pricing" component={Pricing} />
         {/* Admin routes - protected by AdminGuard */}
         <Route path="/admin" component={() => <AdminGuard><AdminDashboard /></AdminGuard>} />
         <Route path="/admin/quotes" component={() => <AdminGuard><AdminQuotes /></AdminGuard>} />
